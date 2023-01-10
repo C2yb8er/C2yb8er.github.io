@@ -9,7 +9,7 @@
     
     <title>
         
-            归档: 2022 |
+            Pwn D0 |
         
         C2yb8er&#39;s Blog
     </title>
@@ -79,7 +79,7 @@
                         </li>
                     
                         <li class="menu-item">
-                            <a class="active"
+                            <a class=""
                                href="/archives"
                             >
                                 归档
@@ -129,7 +129,7 @@
                 </li>
             
                 <li class="drawer-menu-item flex-center">
-                    <a class="active"
+                    <a class=""
                        href="/archives">归档</a>
                 </li>
             
@@ -159,76 +159,177 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="archive-container ">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            <div class="article-title">
+                <span class="title-hover-animation">Pwn D0</span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/WanYe.2i8xng3vmthc.webp">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">二十八华生</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            
+<div class="article-meta-info">
+    <span class="article-date article-meta-item">
         
-<div class="archive-list-container">
+            <i class="fa-regular fa-calendar-plus"></i>&nbsp;
+        
+        <span class="pc">2023-01-10 22:21:09</span>
+        <span class="mobile">2023-01-10 22:21</span>
+    </span>
     
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[2]</span>
-            </div>
-            <ul class="article-list">
+        <span class="article-update-date article-meta-item">
+        <i class="fas fa-file-pen"></i>&nbsp;
+        <span class="pc">2023-01-10 22:30:07</span>
+    </span>
+    
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
                 
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/01/10/Pwnd0/"
-                        >Pwn D0</a>
-                        <span class="article-date">01-10</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/01/10/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E6%9B%B4%E6%8D%A2%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/"
-                        >记录一次更换博客主题</a>
-                        <span class="article-date">01-10</span>
+                    <li>
+                        <a href="/tags/%E5%81%87%E6%9C%9F%E5%AD%A6%E4%B9%A0/">假期学习</a>&nbsp;
                     </li>
                 
             </ul>
-        </section>
+        </span>
     
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2022</span>
-                <span class="archive-year-post-count">[4]</span>
-            </div>
-            <ul class="article-list">
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2022/10/08/sqli-lab%E7%AC%AC%E4%B8%80%E5%85%B3/"
-                        >sqli-lab第一关</a>
-                        <span class="article-date">10-08</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2022/10/03/The-Blog-First-Bug/"
-                        >The Blog First Bug</a>
-                        <span class="article-date">10-03</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2022/10/03/Test-Upload-Function/"
-                        >Test Upload Function</a>
-                        <span class="article-date">10-03</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2022/10/03/Hello-My-Blog/"
-                        >Hello My Blog!</a>
-                        <span class="article-date">10-03</span>
-                    </li>
-                
-            </ul>
-        </section>
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>480 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>1 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content keep-markdown-body">
+                <blockquote>
+<p>寒假PWN Day0</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="一-ret2shellcode-upper-—-gt-ret2libc"><a href="#一-ret2shellcode-upper-—-gt-ret2libc" class="headerlink" title="一.ret2shellcode upper —&gt; ret2libc"></a>一.ret2shellcode upper —&gt; ret2libc</h2><blockquote>
+<p>篡改栈帧上的返回地址为攻击者手动传入的 shellcode 所在缓冲区地址</p>
+<p>初期往往将 shellcode 直接写入栈缓冲区</p>
+<p>目前由于 <strong>the NX bits</strong> 保护措施的开启，栈缓冲区不可执行，故当下的常用手段变为向 bss 缓冲区写入 shellcode 或向堆缓冲区写入 shellcode 并使用 mprotect 赋予其可执行权限</p>
+</blockquote>
+<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_15762939/article/details/104062307">mprotect函数<i class="fas fa-external-link-alt"></i></a>：其可以修改一个进程的属性(RWX) <a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42054155/article/details/113408572?ops_request_misc=&request_id=&biz_id=102&utm_term=chomd%20777&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-113408572.142%5Ev70%5Econtrol,201%5Ev4%5Eadd_ask&spm=1018.2226.3001.4187">chomd 777<i class="fas fa-external-link-alt"></i></a></p>
+<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/image-20230110202100335.1vdku2fxewrk.webp"></p>
+<blockquote>
+<p>int mprotect(void *addr, size_t len, int prot);</p>
+<p>addr：修改保护属性区域的起始地址，addr<strong>必须</strong>是一个内存页的起始地址，简而言之为页大小（一般是 4KB == 4096字节）整数倍。<br>len：被修改保护属性区域的长度,最好为页大小整数倍。修改区域范围[addr, addr+len-1]。<br>prot:( RWX 7 )可以取以下几个值，并可以用“|”将几个属性结合起来使用：<br>1）PROT_READ：内存段可读；<br>2）PROT_WRITE：内存段可写；<br>3）PROT_EXEC：内存段可执行；<br>4）PROT_NONE：内存段不可访问。</p>
+<p>返回值：0成功，-1失败（并且errno被设置）<br>1）EACCES：无法设置内存段的保护属性。当通过 mmap(2) 映射一个文件为只读权限时，接着使用 mprotect() 标志为 PROT_WRITE这种情况就会发生。<br>2）EINVAL：addr不是有效指针，或者不是系统页大小的倍数。<br>3）ENOMEM：内核内部的结构体无法分配。</p>
+</blockquote>
+<h2 id="二-retsyscall"><a href="#二-retsyscall" class="headerlink" title="二.retsyscall"></a>二.retsyscall</h2><h3 id="1-什么是ret2syscall"><a href="#1-什么是ret2syscall" class="headerlink" title="1.什么是ret2syscall"></a>1.什么是ret2syscall</h3><p>​    控制程序执行系统调用，获取 shell。</p>
+<h3 id="2-32位传参规则"><a href="#2-32位传参规则" class="headerlink" title="2.32位传参规则"></a>2.32位传参规则</h3><p>​    采用栈传参：直接将参数入栈，而且是按照参数顺序从右向左依次入栈。</p>
+<blockquote>
+<p> 32位传参规则</p>
+<p>调用函数地址–&gt; 返回参数 –&gt; 参数1 –&gt;  参数2 –&gt;  …</p>
+</blockquote>
+<p>Payload传递形式：p32(call_vuln)+p32(ret_addr)+p32(参数1)+p32(参数2)+p32(参数3)</p>
+<h3 id="3-Linux系统调用号表"><a href="#3-Linux系统调用号表" class="headerlink" title="3.Linux系统调用号表"></a>3.<a class="link" target="_blank" rel="noopener" href="https://www.jianshu.com/p/0c0b4b69c379">Linux系统调用号表<i class="fas fa-external-link-alt"></i></a></h3>
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul class="copyright-info-content">
+        <li>
+            <span class="type">本文标题</span>：<span class="content">Pwn D0</span>
+        </li>
+        <li>
+            <span class="type">本文作者</span>：<span class="content">二十八华生</span>
+        </li>
+        <li>
+            <span class="type">创建时间</span>：<span class="content">2023-01-10 22:21:09</span>
+        </li>
+        <li class="post-link">
+            <span class="type">本文链接</span>：<span class="content">2023/01/10/Pwnd0/</span>
+        </li>
+        <li>
+            <span class="type">版权声明</span>：<span class="content">本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！</span>
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/%E5%81%87%E6%9C%9F%E5%AD%A6%E4%B9%A0/">#假期学习</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                               rel="next"
+                               href="/2023/01/10/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E6%9B%B4%E6%8D%A2%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/"
+                            >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">记录一次更换博客主题</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                                <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-ret2shellcode-upper-%E2%80%94-gt-ret2libc"><span class="nav-text">一.ret2shellcode upper —&gt; ret2libc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-retsyscall"><span class="nav-text">二.retsyscall</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFret2syscall"><span class="nav-text">1.什么是ret2syscall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-32%E4%BD%8D%E4%BC%A0%E5%8F%82%E8%A7%84%E5%88%99"><span class="nav-text">2.32位传参规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Linux%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7%E8%A1%A8"><span class="nav-text">3.Linux系统调用号表</span></a></li></ol></li></ol>
     </div>
 </div>
+
+            </div>
+        
+    </div>
+</div>
+
 
                 
             </div>
@@ -271,6 +372,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-bottom-side-tools">
@@ -369,6 +487,14 @@
 
 
 <div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/post-helper.js"></script>
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/anime.min.js"></script>
+        
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/toc.js"></script>
+        
     
 </div>
 
