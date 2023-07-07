@@ -202,7 +202,7 @@
     
         <span class="article-update-date article-meta-item">
         <i class="fas fa-file-pen"></i>&nbsp;
-        <span class="pc">2023-07-08 00:51:57</span>
+        <span class="pc">2023-07-08 01:02:44</span>
     </span>
     
     
@@ -233,7 +233,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i>&nbsp;<span>211 字</span>
+            <i class="fas fa-file-word"></i>&nbsp;<span>407 字</span>
         </span>
     
     
@@ -273,7 +273,21 @@
 </ul>
 </blockquote>
 <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>​    略，网上教程一大堆懒得写了。主要是靶场提前搭建好了才开始写此篇的。</p>
-<h1 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h1><h2 id="exec-“ping”"><a href="#exec-“ping”" class="headerlink" title="exec “ping”"></a>exec “ping”</h2><p>同DVMA-LOW类型</p>
+<h1 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h1><blockquote>
+<p>RCE(Remote Command/Code Execute)，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。</p>
+</blockquote>
+<h2 id="exec-“ping”"><a href="#exec-“ping”" class="headerlink" title="exec “ping”"></a>exec “ping”</h2><p>同DVMA-LOW类型</p>
+<h2 id="exec-“eval”"><a href="#exec-“eval”" class="headerlink" title="exec “eval”"></a>exec “eval”</h2><p>输入了一个字符串就出现了报错了，看看题目<code>eval</code>去了解一下：</p>
+<blockquote>
+<p><code>eval()</code>是PHP的一个函数，用于执行包含在字符串中的PHP代码。它将字符串中的代码作为参数传递，并在运行时将其解析和执行。</p>
+<p><code>eval()</code>函数的语法如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mixed</span> <span class="keyword">eval</span>(<span class="keyword">string</span> <span class="variable">$code</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>$code</code>是一个包含要执行的PHP代码的字符串。</p>
+</blockquote>
+<p>只要输入正确参数就能执行：<mark>这里一开始我也这样试了，但是忘记加分号结束了….</mark></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;pika~pika&quot;;</span><br><span class="line">phpinfo();</span><br><span class="line">system(&#x27;chdir&#x27;);</span><br><span class="line">system(&#x27;whoami&#x27;);</span><br></pre></td></tr></table></figure>
+
 
             </div>
 
@@ -341,7 +355,7 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%B6%E5%9C%BA%E4%BB%8B%E7%BB%8D"><span class="nav-text">靶场介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-text">我的目标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RCE"><span class="nav-text">RCE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#exec-%E2%80%9Cping%E2%80%9D"><span class="nav-text">exec “ping”</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%B6%E5%9C%BA%E4%BB%8B%E7%BB%8D"><span class="nav-text">靶场介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-text">我的目标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RCE"><span class="nav-text">RCE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#exec-%E2%80%9Cping%E2%80%9D"><span class="nav-text">exec “ping”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec-%E2%80%9Ceval%E2%80%9D"><span class="nav-text">exec “eval”</span></a></li></ol></li></ol>
     </div>
 </div>
 
