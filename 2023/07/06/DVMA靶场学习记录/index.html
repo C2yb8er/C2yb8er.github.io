@@ -202,7 +202,7 @@
     
         <span class="article-update-date article-meta-item">
         <i class="fas fa-file-pen"></i>&nbsp;
-        <span class="pc">2023-07-06 21:35:16</span>
+        <span class="pc">2023-07-08 00:47:23</span>
     </span>
     
     
@@ -233,12 +233,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i>&nbsp;<span>2.7k 字</span>
+            <i class="fas fa-file-word"></i>&nbsp;<span>4.6k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fas fa-clock"></i>&nbsp;<span>13 分钟</span>
+            <i class="fas fa-clock"></i>&nbsp;<span>22 分钟</span>
         </span>
     
     
@@ -360,9 +360,96 @@
 
 
 
-<h1 id="Command-Injection"><a href="#Command-Injection" class="headerlink" title="Command Injection"></a>Command Injection</h1><ul>
+<h2 id="Add"><a href="#Add" class="headerlink" title="Add"></a>Add</h2><p> 做到这里我想起来了<code>Pikachu靶场</code>的爆破题目，加入了图形验证码机制，然后我就去把这种题目通了，很简单Burp加个验证码识别的插件就可以，就是环境配起来有点小麻烦！</p>
+<h1 id="Command-Injection"><a href="#Command-Injection" class="headerlink" title="Command Injection"></a>Command Injection</h1><blockquote>
+<p>我认为本质就是考命令执行连接符以及黑名单绕过</p>
+</blockquote>
+<ul>
 <li><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/liweibin812/article/details/86235692">出现乱码解决方案<i class="fas fa-external-link-alt"></i></a></li>
 </ul>
+<blockquote>
+<ul>
+<li>From OWASP<br>Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.</li>
+<li>This attack differs from Code Injection, in that code injection allows the attacker to add their own code that is then executed by the application. In Command Injection, the attacker extends the default functionality of the application, which execute system commands, without the necessity of injecting code.</li>
+</ul>
+</blockquote>
+<ul>
+<li>跟<code>pikachu靶场</code>中的<code>RCE</code>类型可以结合在一起学习。</li>
+</ul>
+<h2 id="Low-1"><a href="#Low-1" class="headerlink" title="Low"></a>Low</h2><p>​    因为有过基础，所以自然就会下列的payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip &amp; command</span><br><span class="line">ip | command</span><br></pre></td></tr></table></figure>
+
+<p>​    Low难度也是给面子，直接就通了。</p>
+<p>​    查看源码探究一下原理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Submit&#x27; ]  ) ) </span><br><span class="line">&#123;</span><br><span class="line">	// Get input</span><br><span class="line">	$target = $_REQUEST[ &#x27;ip&#x27; ];</span><br><span class="line"></span><br><span class="line">	// Determine OS and execute the ping command.</span><br><span class="line">	if( stristr( php_uname( &#x27;s&#x27; ), &#x27;Windows NT&#x27; ) ) &#123;</span><br><span class="line">		// Windows</span><br><span class="line">		$cmd = shell_exec( &#x27;ping  &#x27; . $target );</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		// *nix</span><br><span class="line">		$cmd = shell_exec( &#x27;ping  -c 4 &#x27; . $target );</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Feedback for the end user</span><br><span class="line">	$html .= &quot;&lt;pre&gt;&#123;$cmd&#125;&lt;/pre&gt;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">&lt;!--前端： --&gt;   </span><br><span class="line">&lt;form name=&quot;ping&quot; action=&quot;#&quot; method=&quot;post&quot;&gt;</span><br><span class="line">    &lt;p&gt;</span><br><span class="line">        Enter an IP address:</span><br><span class="line">        &lt;input type=&quot;text&quot; name=&quot;ip&quot; size=&quot;30&quot;&gt;</span><br><span class="line">        &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Submit&quot;&gt;</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    程序执行流程没啥好解释的，直接把我们提交的数据和<code>ping</code>命令连接起来放在执行函数中直接执行了。</p>
+<p>补充知识：</p>
+<ul>
+<li><p>stristr() 函数搜索字符串在另一字符串中的第一次出现。</p>
+<p><strong>注释：</strong>该函数是不区分大小写的。如需进行区分大小写的搜索，请使用 <a class="link" target="_blank" rel="noopener" href="https://www.runoob.com/php/func-string-strstr.html">strstr()<i class="fas fa-external-link-alt"></i></a> 函数。</p>
+</li>
+<li><p><code>php_uname()</code>是PHP的一个内置函数，用于获取服务器的操作系统信息。它返回一个包含操作系统名称的字符串。</p>
+<p>该函数可以接受一个可选的参数来指定返回的信息类型，常用的参数如下：</p>
+<ul>
+<li><code>&#39;s&#39;</code>：返回操作系统的名称（比如 Windows NT、Linux、Darwin等）。</li>
+<li><code>&#39;n&#39;</code>：返回网络主机名。</li>
+<li><code>&#39;r&#39;</code>：返回操作系统的版本号。</li>
+<li><code>&#39;v&#39;</code>：返回操作系统的版本信息。</li>
+</ul>
+</li>
+<li><blockquote>
+<p><code>shell_exec()</code>是PHP的一个内置函数，用于执行系统命令，并将命令的输出作为字符串返回。它允许在PHP脚本中执行外部命令或程序。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> <span class="title function_ invoke__">shell_exec</span>(<span class="keyword">string</span> <span class="variable">$command</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>$command</code>是要执行的系统命令，可以是任何有效的命令行命令或可执行文件。</p>
+<p><code>shell_exec()</code>函数执行指定的命令，并将命令的输出作为字符串返回给调用者。如果命令没有产生任何输出，或者命令执行失败，函数将返回<code>NULL</code>。</p>
+</blockquote>
+</li>
+<li><p><code>ping -c 4</code>中<code>-c 4</code>是ping命令的一个选项，用于指定要发送的回显请求的数量。在这个特定的例子中，<code>-c 4</code>表示要发送4个回显请求。</p>
+</li>
+<li><p>```php<br>//在PHP中，点号（.）被用作字符串连接运算符，用于将两个字符串连接在一起。<br>$str1 = “Hello”;<br>$str2 = “world!”;<br>$result = $str1 . $str2;<br>echo $result; // 输出：Hello world!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  ![image-20230708001143708](D:\Typora\typora-user-images\image-20230708001143708.png)</span><br><span class="line"></span><br><span class="line">&gt; Summarid by sqlsec.com</span><br><span class="line"></span><br><span class="line">| Linux中符号 | 说明                                                         |</span><br><span class="line">| ----------- | ------------------------------------------------------------ |</span><br><span class="line">| A;B         | A 不论正确与否都会执行 B 命令                                |</span><br><span class="line">| A&amp;B         | A 后台运行，A 和 B 同时执行                                  |</span><br><span class="line">| A&amp;&amp;B        | A 执行成功时候才会执行 B 命令                                |</span><br><span class="line">| A\|B        | A 执行的输出结果，作为 B 命令的参数，A 不论正确与否都会执行 B 命令 |</span><br><span class="line">| A\|\|B      | A 执行失败后才会执行 B 命令                                  |</span><br><span class="line"></span><br><span class="line">&gt; 在命令执行中A&amp;B与A;B有什么区别？</span><br><span class="line">&gt;</span><br><span class="line">&gt; ​	在命令执行中，`A&amp;B`和`A;B`表示不同的命令执行方式：</span><br><span class="line">&gt;</span><br><span class="line">&gt; 1. `A&amp;B`：表示将命令A放在后台执行，并立即启动命令B。具体来说，命令A将在后台执行，不会阻塞当前命令行或脚本的执行，而命令B将在前台执行。这种方式常用于需要同时执行多个命令，并希望它们在后台并行执行的情况。</span><br><span class="line">&gt; 2. `A;B`：表示按顺序执行命令A和命令B。具体来说，命令A将在执行完毕后，才会开始执行命令B。这种方式常用于需要按顺序执行多个命令，并确保前一个命令执行完毕后再执行下一个命令的情况。</span><br><span class="line"></span><br><span class="line">- 由于我的靶场搭建在windows环境下,Linux命令需要等效代替：</span><br><span class="line">  - `ls`，对应于windows的`dir`</span><br><span class="line">  - `pwd`，对应于windows的`chdir`</span><br><span class="line">  - `cat`，对应于windows的`type`</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Medium</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>———打得通———-<br>|<br>&amp;</p>
+</li>
+<li><p>———打不通———-<br>&amp;&amp;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">看看源码，多了这部分:</span><br><span class="line"></span><br><span class="line">```php</span><br><span class="line">// Set blacklist</span><br><span class="line">$substitutions = array(</span><br><span class="line">    &#x27;&amp;&amp;&#x27; =&gt; &#x27;&#x27;,</span><br><span class="line">    &#x27;;&#x27;  =&gt; &#x27;&#x27;,</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>相比Low难度，这里使用了黑名单将里面的内容过滤掉了。</p>
+<h2 id="High-1"><a href="#High-1" class="headerlink" title="High"></a>High</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">----------打得通----------</span><br><span class="line">|</span><br><span class="line">----------打不通----------</span><br><span class="line">&amp;&amp;</span><br><span class="line">&amp;</span><br><span class="line">----------而且是必须紧挨后面的命令没有空格才可以打通----------</span><br><span class="line">127.0.0.1|ls</span><br></pre></td></tr></table></figure>
+
+<p>查看一下源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set blacklist</span></span><br><span class="line"><span class="variable">$substitutions</span> = <span class="keyword">array</span>(</span><br><span class="line">	<span class="string">&#x27;&amp;&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;;&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;| &#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;-&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;$&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;(&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;)&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;`&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;||&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>好家伙，给禁用的差不多了，但是注意<code>&#39;| &#39; =&gt; &#39;&#39;</code>中的管道符后面有个空格。</p>
+<h2 id="Impossible-1"><a href="#Impossible-1" class="headerlink" title="Impossible"></a>Impossible</h2><p>看看源码学习学习：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ]  ) ) &#123;</span><br><span class="line">	<span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">	<span class="title function_ invoke__">checkToken</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$target</span> = <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;ip&#x27;</span> ];</span><br><span class="line">	<span class="variable">$target</span> = <span class="title function_ invoke__">stripslashes</span>( <span class="variable">$target</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Split the IP into 4 octects</span></span><br><span class="line">	<span class="variable">$octet</span> = <span class="title function_ invoke__">explode</span>( <span class="string">&quot;.&quot;</span>, <span class="variable">$target</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check IF each octet is an integer</span></span><br><span class="line">	<span class="keyword">if</span>( ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">0</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">1</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">2</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">is_numeric</span>( <span class="variable">$octet</span>[<span class="number">3</span>] ) ) &amp;&amp; ( <span class="title function_ invoke__">sizeof</span>( <span class="variable">$octet</span> ) == <span class="number">4</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// If all 4 octets are int&#x27;s put the IP back together.</span></span><br><span class="line">		<span class="variable">$target</span> = <span class="variable">$octet</span>[<span class="number">0</span>] . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$octet</span>[<span class="number">1</span>] . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$octet</span>[<span class="number">2</span>] . <span class="string">&#x27;.&#x27;</span> . <span class="variable">$octet</span>[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Determine OS and execute the ping command.</span></span><br><span class="line">		<span class="keyword">if</span>( <span class="title function_ invoke__">stristr</span>( <span class="title function_ invoke__">php_uname</span>( <span class="string">&#x27;s&#x27;</span> ), <span class="string">&#x27;Windows NT&#x27;</span> ) ) &#123;</span><br><span class="line">			<span class="comment">// Windows</span></span><br><span class="line">			<span class="variable">$cmd</span> = <span class="title function_ invoke__">shell_exec</span>( <span class="string">&#x27;ping  &#x27;</span> . <span class="variable">$target</span> );</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// *nix</span></span><br><span class="line">			<span class="variable">$cmd</span> = <span class="title function_ invoke__">shell_exec</span>( <span class="string">&#x27;ping  -c 4 &#x27;</span> . <span class="variable">$target</span> );</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for the end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;<span class="subst">&#123;$cmd&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Ops. Let the user name theres a mistake</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&#x27;&lt;pre&gt;ERROR: You have entered an invalid IP.&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line"><span class="title function_ invoke__">generateSessionToken</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>知识点补充：</p>
+<ul>
+<li><blockquote>
+<p><code>explode()</code>函数是PHP的一个内置函数，用于将一个字符串根据指定的分隔符拆分成一个数组。它的语法如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">array</span> <span class="title function_ invoke__">explode</span>(<span class="keyword">string</span> <span class="variable">$delimiter</span>, <span class="keyword">string</span> <span class="variable">$string</span>[, <span class="keyword">int</span> <span class="variable">$limit</span>])</span><br></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<ul>
+<li><code>$delimiter</code>：指定的分隔符，用于将字符串拆分成数组元素。</li>
+<li><code>$string</code>：要拆分的原始字符串。</li>
+<li><code>$limit</code>（可选）：限制拆分后的数组元素数量。</li>
+</ul>
+<p>在这段代码中，分隔符是<code>.</code>，原始字符串是<code>$target</code>。<code>explode()</code>函数会将<code>$target</code>字符串中的每个<code>.</code>作为分隔符，将字符串拆分成多个部分，并将这些部分存储在一个数组中。</p>
+<p>拆分后的结果将存储在名为<code>$octet</code>的数组中。每个<code>$octet</code>数组元素都对应一个原始字符串中<code>.</code>分隔的部分。假设<code>$target</code>的值是<code>&quot;192.168.0.1&quot;</code>，那么<code>$octet</code>数组的内容将是<code>[&quot;192&quot;, &quot;168&quot;, &quot;0&quot;, &quot;1&quot;]</code>，即将IP地址的每个段拆分成一个数组元素。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<pre><code class="php">bool is_numeric(mixed $var)
+</code></pre>
+<p>参数$var是要检查的变量。</p>
+<p>当$var是一个数值或数值字符串时，is_numeric()函数将返回true，否则返回false。</p>
+</blockquote>
+</li>
+</ul>
+<p>​    问题出在最后被分割的一个数组元素，它还包含着我们输入的连接符和命令所以不是数值，从而不满足条件，有点意思。</p>
 
             </div>
 
@@ -404,6 +491,21 @@
             
                 <div class="article-nav">
                     
+                        <div class="article-prev">
+                            <a class="prev"
+                               rel="prev"
+                               href="/2023/07/08/Pikachu%E9%9D%B6%E5%9C%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"
+                            >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                                <span class="title flex-center">
+                                <span class="post-nav-title-item">Pikachu靶场学习记录</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                            </a>
+                        </div>
+                    
                     
                         <div class="article-next">
                             <a class="next"
@@ -430,7 +532,7 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%B6%E5%9C%BA%E4%BB%8B%E7%BB%8D"><span class="nav-text">靶场介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-text">我的目标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Brute-Force"><span class="nav-text">Brute Force</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Low"><span class="nav-text">Low</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E7%94%A8SQL%E6%B3%A8%E5%85%A5%E8%AF%95%E4%B8%80%E4%B8%8B"><span class="nav-text">先用SQL注入试一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%86%E7%A0%B4"><span class="nav-text">爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Brup"><span class="nav-text">Brup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Medium"><span class="nav-text">Medium</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#High"><span class="nav-text">High</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-1"><span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">(.*?)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#findall"><span class="nav-text">findall</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Burp"><span class="nav-text">Burp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Impossible"><span class="nav-text">Impossible</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Command-Injection"><span class="nav-text">Command Injection</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%B6%E5%9C%BA%E4%BB%8B%E7%BB%8D"><span class="nav-text">靶场介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-text">我的目标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Brute-Force"><span class="nav-text">Brute Force</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Low"><span class="nav-text">Low</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E7%94%A8SQL%E6%B3%A8%E5%85%A5%E8%AF%95%E4%B8%80%E4%B8%8B"><span class="nav-text">先用SQL注入试一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%86%E7%A0%B4"><span class="nav-text">爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Brup"><span class="nav-text">Brup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Medium"><span class="nav-text">Medium</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#High"><span class="nav-text">High</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-1"><span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">(.*?)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#findall"><span class="nav-text">findall</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Burp"><span class="nav-text">Burp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Impossible"><span class="nav-text">Impossible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add"><span class="nav-text">Add</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Command-Injection"><span class="nav-text">Command Injection</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Low-1"><span class="nav-text">Low</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#High-1"><span class="nav-text">High</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Impossible-1"><span class="nav-text">Impossible</span></a></li></ol></li></ol>
     </div>
 </div>
 
