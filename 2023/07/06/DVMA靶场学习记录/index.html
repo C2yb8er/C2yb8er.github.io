@@ -202,7 +202,7 @@
     
         <span class="article-update-date article-meta-item">
         <i class="fas fa-file-pen"></i>&nbsp;
-        <span class="pc">2023-07-08 16:24:05</span>
+        <span class="pc">2023-07-08 16:27:15</span>
     </span>
     
     
@@ -519,13 +519,13 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/DVWA/vulnerabilities/csrf/?password_new=admin&amp;password_conf=admin&amp;Change=Change#</span><br></pre></td></tr></table></figure>
 
 <p>此时当我们登录另外一个账号</p>
-<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230708140900314.png"></p>
+<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230708/St2iv8rimage.5xn8j1yh40s0.png"></p>
 <p>这里我选择user为1337的账号：<br>但是让该用户直接点击上面url难度比较大，我们尝试伪造成短链接：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://1i8.cn/kkyiM</span><br></pre></td></tr></table></figure>
 
 <p>当用户点击此链接后密码就会被更改为<code>admin</code></p>
 <p>我们登录验证一下：</p>
-<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230708141447032.png"></p>
+<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230708/St2iv8rimage.317hjnl5ymg0.png"></p>
 <p>修改成功</p>
 <h2 id="Medium-2"><a href="#Medium-2" class="headerlink" title="Medium"></a>Medium</h2><p>当我如法炮制的时候出现了报错：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">That request didn&#x27;t look correct.</span><br></pre></td></tr></table></figure>

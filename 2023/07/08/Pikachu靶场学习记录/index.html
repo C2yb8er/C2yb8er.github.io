@@ -202,7 +202,7 @@
     
         <span class="article-update-date article-meta-item">
         <i class="fas fa-file-pen"></i>&nbsp;
-        <span class="pc">2023-07-08 16:14:17</span>
+        <span class="pc">2023-07-08 16:28:02</span>
     </span>
     
     
@@ -307,8 +307,8 @@
 <li><mark>fireForms()函数</mark>（比较有实战价值）用于自动提交表单。它首先定义了一个变量<code>count</code>为2，然后通过一个循环来处理表单。在每次循环中，它通过<code>document.forms[i].submit()</code>来提交第<code>i</code>个表单。然后，通过调用<code>pausecomp(pauses[i])</code>来暂停一段时间，由数组<code>pauses</code>中的值控制暂停时间。</li>
 </ul>
 </blockquote>
-<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230708155442973.png"></p>
-<h2 id="CSRF-token"><a href="#CSRF-token" class="headerlink" title="CSRF(token)"></a>CSRF(token)</h2><p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230708155929528.png"></p>
+<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230708/St2iv8rimage.4d20lm4cky60.png"></p>
+<h2 id="CSRF-token"><a href="#CSRF-token" class="headerlink" title="CSRF(token)"></a>CSRF(token)</h2><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230708/St2iv8rimage.4s9o8tdmwcc0.png"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生成一个token,以当前微妙时间+一个5位的前缀</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">set_token</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;token&#x27;</span>]))&#123;</span><br><span class="line">       <span class="keyword">unset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;token&#x27;</span>]);</span><br><span class="line">    &#125;   <span class="variable">$_SESSION</span>[<span class="string">&#x27;token&#x27;</span>]=<span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;.&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="title function_ invoke__">uniqid</span>(<span class="title function_ invoke__">mt_rand</span>(<span class="number">10000</span>,<span class="number">99999</span>),<span class="literal">true</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>由于set_token函数是再修改个人信息页面中调用的，而且本题目是用的get方法提交所以我们只需要满足下列条件就可以成功：</p>
