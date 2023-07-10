@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="文明其思想，野蛮其体魄。">
+    <meta name="author" content="二十八华生">
+    
+    <title>
+        
+            crAPI靶场学习记录 |
+        
+        二十八华生的博客
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/bitbug_favicon.6goqr5bioz9c.webp">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/regular.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/solid.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/brands.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"c2yb8er.cn","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#0066cc","logo":"https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/WanYe.2i8xng3vmthc.webp","favicon":"https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/bitbug_favicon.6goqr5bioz9c.webp","avatar":"https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/WanYe.2i8xng3vmthc.webp","font_size":"15.2px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"header_transparent":true,"background_img":"/images/bg.svg","description":"文明其思想，||野蛮其体魄。","font_color":null,"hitokoto":false},"scroll":{"progress_bar":true,"percent":false}},"local_search":{"enable":true,"preload":true},"code_copy":{},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.7"},"waline":{"server_url":null,"reaction":false,"version":2}},"post":{"author_label":{"enable":false,"auto":true,"custom_label_list":[]},"word_count":{"enable":true,"wordcount":true,"min2read":true},"img_align":"left","copyright_info":true},"version":"3.5.2"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"};
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/WanYe.2i8xng3vmthc.webp">
+                </a>
+            
+            <a class="logo-title" href="/">
+               二十八华生的博客
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                分类
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">分类</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            <div class="article-title">
+                <span class="title-hover-animation">crAPI靶场学习记录</span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="https://cdn.staticaly.com/gh/C2yb8er/images@master/20230110/WanYe.2i8xng3vmthc.webp">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">二十八华生</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            
+<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        
+            <i class="fa-regular fa-calendar-plus"></i>&nbsp;
+        
+        <span class="pc">2023-07-10 15:10:49</span>
+        <span class="mobile">2023-07-10 15:10</span>
+    </span>
+    
+        <span class="article-update-date article-meta-item">
+        <i class="fas fa-file-pen"></i>&nbsp;
+        <span class="pc">2023-07-10 21:11:43</span>
+    </span>
+    
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Web/">Web</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/API%E5%AE%89%E5%85%A8/">API安全</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>4.5k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>17 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content keep-markdown-body">
+                <blockquote>
+<p>API安全</p>
+</blockquote>
+<span id="more"></span>
+
+
+
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><ul>
+<li><a class="link" target="_blank" rel="noopener" href="https://github.com/C2yb8er/crAPIlabs">靶场下载地址<i class="fas fa-external-link-alt"></i></a>(我fork了一份)</li>
+<li>docker安装，笔者是用的wsl+docker.</li>
+</ul>
+<h1 id="lab0-初始账户"><a href="#lab0-初始账户" class="headerlink" title="lab0:初始账户"></a>lab0:初始账户</h1><ol>
+<li>注册一个账户，邮箱为<a class="link" href="mailto:&#65;&#80;&#73;&#x40;&#113;&#113;&#46;&#99;&#111;&#x6d;">&#65;&#80;&#73;&#x40;&#113;&#113;&#46;&#99;&#111;&#x6d;<i class="fas fa-external-link-alt"></i></a>，密码为Admin@123</li>
+</ol>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\1.png"></p>
+<ol start="2">
+<li>登陆后访问对应IP的8025端口，接收邮件获取车辆信息。</li>
+</ol>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710154137795.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710154500052.png"></p>
+<h1 id="lab1-访问其它用户车辆的详细信息"><a href="#lab1-访问其它用户车辆的详细信息" class="headerlink" title="lab1:访问其它用户车辆的详细信息"></a>lab1:访问其它用户车辆的详细信息</h1><ol>
+<li><p>登录后首先找到泄露其它用户的车辆 id的接口。进入论坛主页点击某一个论坛文章发现此时的URL为：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\4.png"></p>
+<p>于是试着抓一下包，看能返回什么，可以看到已经返回了该用户的意思信息：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710154936651.png"></p>
+<p>进一步我们猜测一下直接抓论坛首页试试：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710155225990.png"></p>
+<p>在这里我们就得到了demo用户的<code>vehicleid</code>信息</p>
+</li>
+<li><p>要查车辆信息，现在我们只有Dashboard页面存在车辆信息，我们尝试抓包这个页面,抓了下首页发现是应该根据我们当前用户的Cookie来返回的，我们再找找有没有其他地方：</p>
+</li>
+</ol>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710160118580.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710160325598.png"></p>
+<p>​    我们将其替换为demo用户的<code>vehicleid</code>信息<code>54e7994a-e14e-4ee6-a46d-235ca3fd0eed</code></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710160533143.png"></p>
+<h1 id="lab2-访问其它用户的机械报告"><a href="#lab2-访问其它用户的机械报告" class="headerlink" title="lab2:访问其它用户的机械报告"></a>lab2:访问其它用户的机械报告</h1><p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710160737982.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\11.png"></p>
+<p>​    在提交的Json数据中发现危险数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;report_link&quot;</span>:<span class="string">&quot;http://localhost:8888/workshop/api/mechanic/mechanic_report?report_id=9&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    这个数据返回了报告的地址，通过修改report_id，我们可以越权访问他人的数据：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710162100145.png"></p>
+<h1 id="lab3-重置其它用户的密码"><a href="#lab3-重置其它用户的密码" class="headerlink" title="lab3: 重置其它用户的密码"></a>lab3: 重置其它用户的密码</h1><p>退出登录，点击忘记密码，输入<code>API@qq.com</code>，点击<code>Sent OTP</code>，在后台查看验证码只有四位，于是准备爆破</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710162517274.png"></p>
+<p>填写表单，密码修改为<code>Admin@456</code>，提交抓包查看：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710162704015.png"></p>
+<p>多交几次看看有没有限制爆破：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710162748923.png"></p>
+<p>由于是API的靶场，我们试试换个API的版本试试：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710162857583.png"></p>
+<p>开始着手爆破，选择狙击手模式即可，导入我们从0到9999的字典开始爆破：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710163939849.png"></p>
+<p>可以看到原来的密码已经不能登录了：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710164058471.png"></p>
+<h1 id="lab4-找到泄露其它用户敏感信息的API接口"><a href="#lab4-找到泄露其它用户敏感信息的API接口" class="headerlink" title="lab4: 找到泄露其它用户敏感信息的API接口"></a>lab4: 找到泄露其它用户敏感信息的API接口</h1><p>同lab1中的论坛页面信息泄露</p>
+<h1 id="lab5-找到泄露视频内部属性的API接口"><a href="#lab5-找到泄露视频内部属性的API接口" class="headerlink" title="lab5: 找到泄露视频内部属性的API接口"></a>lab5: 找到泄露视频内部属性的API接口</h1><blockquote>
+<p>感觉这个接口比较鸡肋</p>
+</blockquote>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710164721698.png"></p>
+<p>​    懒得按这个按钮才弹出的上传视频选项，于是我选择修改前端删掉hidden部分就可以：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710164832119.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710165011689.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710165213979.png"></p>
+<h1 id="lab6-使用-“contact-mechanic”-功能完成第7层DoS"><a href="#lab6-使用-“contact-mechanic”-功能完成第7层DoS" class="headerlink" title="lab6: 使用 “contact mechanic” 功能完成第7层DoS"></a>lab6: 使用 “contact mechanic” 功能完成第7层DoS</h1><p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710160737982.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\11.png"></p>
+<p>​    在提交的Json数据中发现危险数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;repeat_request_if_failed&quot;</span>:<span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;number_of_repeats&quot;</span>:<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>​    我们尝试修改，再重新提交：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;repeat_request_if_failed&quot;</span>:<span class="literal">true</span>,</span><br><span class="line"><span class="string">&quot;number_of_repeats&quot;</span>:<span class="number">1000000000</span></span><br></pre></td></tr></table></figure>
+
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710161511648.png"></p>
+<h1 id="lab7-删除另一个用户的视频"><a href="#lab7-删除另一个用户的视频" class="headerlink" title="lab7:删除另一个用户的视频"></a>lab7:删除另一个用户的视频</h1><blockquote>
+<p>这个API危害挺大</p>
+</blockquote>
+<p>还是lab5处的抓包，我们修改一下协议，把PUT修改为OPTIONS</p>
+<blockquote>
+<p>HTTP中的OPTIONS方法是一种用于获取目标资源所支持的HTTP方法列表的请求方法。它允许客户端向服务器查询对特定资源所支持的请求方法，以确定在不实际发送请求的情况下，可以对该资源执行哪些操作。</p>
+<p>OPTIONS请求的主要用途包括：</p>
+<ol>
+<li>CORS（跨域资源共享）：在进行跨域请求时，浏览器会首先发送一个OPTIONS请求，以确定服务器是否允许发送实际的跨域请求。<strong>服务器可以通过返回特定的响应头（如Access-Control-Allow-Methods）来指示允许的请求方法。</strong></li>
+<li>服务器功能查询：客户端可以使用OPTIONS请求向服务器查询特定资源支持的HTTP方法列表。这对于动态确定可以执行的操作非常有用，可以根据服务器返回的允许的方法列表来自适应地构建请求。</li>
+<li>API文档和发现：OPTIONS方法还可以用于提供API文档和服务发现功能。通过在OPTIONS响应中包含有关资源的元数据，例如支持的方法、请求头等信息，客户端可以获得有关API的更多信息，以便正确使用和调用API。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol>
+<li>GET：用于从服务器获取资源。客户端发送一个GET请求来获取指定URI的资源。GET请求是幂等的，即多次发送相同的GET请求应该返回相同的响应。</li>
+<li>POST：用于向服务器提交数据，创建新资源或触发服务器的处理操作。POST请求将数据作为请求体发送给服务器，通常用于提交表单数据、上传文件等。</li>
+<li>PUT：用于向服务器更新或替换资源。PUT请求将请求体中的数据保存到服务器上指定的URI位置。如果URI不存在，则可以创建新资源；如果URI已存在，则将其替换为请求的内容。</li>
+<li>DELETE：用于删除服务器上的资源。DELETE请求用于删除指定URI的资源。</li>
+<li>OPTIONS：用于获取目标资源所支持的HTTP方法列表。OPTIONS请求允许客户端查询服务器对特定资源支持的请求方法，以确定可以对该资源执行哪些操作。</li>
+<li>HEAD：与GET方法类似，但不返回响应体，仅返回响应头。HEAD请求用于获取关于资源的元数据，例如响应头中的信息，而无需传输整个响应体。</li>
+<li>PATCH：用于对服务器上的资源进行局部更新。PATCH请求仅对资源进行部分修改，而不是替换整个资源。</li>
+</ol>
+<p>除了上述方法外，HTTP/1.1 规范还定义了其他一些请求方法，如：</p>
+<ul>
+<li>TRACE：用于在请求往返的路径上执行一个追踪。它通常用于诊断和调试，以确定请求如何通过代理服务器和中间节点传输。</li>
+<li>CONNECT：用于建立与目标主机的隧道连接，通常用于通过代理服务器建立安全的HTTPS连接。</li>
+</ul>
+</blockquote>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710165905914.png"></p>
+<p>权限不足说明需要用admin的身份：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710170054690.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710170127532.png"></p>
+<p>​    后续通过修改<code>videos/</code>后的ID可以实现任意视频的删除</p>
+<h1 id="lab8-免费获得一件物品"><a href="#lab8-免费获得一件物品" class="headerlink" title="lab8: 免费获得一件物品"></a>lab8: 免费获得一件物品</h1><p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710170452955.png"></p>
+<p>点击后抓包：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710182538522.png"></p>
+<p><mark>修改请求方式为GET</mark>：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710182904756.png"></p>
+<p>我们可以敏锐地观察到返回的Json数据中有一个status数据，明显表示着已经订购的信息。回到购买界面，我们看到还有Return按钮，我们点击后抓包看看：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710183854529.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710184038494.png"></p>
+<p>直接切换成GET请求爆出了无权使用的消息，不慌张我们试试尝试着先把这个货品退回再用之前的方式利用order_id进行查看，发现状态确实发生了改变。</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710184421859.png"></p>
+<p>​    这里我们大胆猜想退回的状态就是returned进行修改试试，注意由于status是原来就有的数据，所以这里我们需要用PUT协议进行提交而不是POST协议：</p>
+<blockquote>
+<p>PUT和POST是HTTP请求方法，用于向服务器提交数据。它们在语义和使用场景上有以下区别：</p>
+<ol>
+<li>目的：POST用于向服务器提交数据，请求服务器对数据进行处理。通常用于创建新资源、提交表单数据、发送评论等。PUT用于向服务器更新或替换指定URI的资源。如果URI不存在，则可以创建新资源；如果URI已存在，则将其替换为请求的内容。</li>
+<li>幂等性：POST请求不是幂等的，即多次发送相同的POST请求可能会产生不同的结果。每次发送POST请求，服务器可能会创建新的资源、执行不同的操作或返回不同的响应。PUT请求是幂等的，即多次发送相同的PUT请求应该产生相同的结果。每次发送PUT请求，服务器应该将请求的内容保存在指定的URI位置，因此多次请求会更新或替换相同的资源。</li>
+<li>数据位置：POST请求将数据包含在请求体中发送给服务器。数据的格式可以是表单数据、JSON、XML等。PUT请求也将数据包含在请求体中，但是它通常用于指定URI位置的资源，并将请求的内容保存在该位置。</li>
+<li>资源标识：POST请求通常由服务器决定资源的标识，并返回新资源的标识符（如生成的ID）。PUT请求通常由客户端指定资源的标识，即URI中的位置。</li>
+</ol>
+<p>总结来说，<mark>POST用于提交数据进行处理，通常用于创建新资源或执行操作，而PUT用于更新或替换指定URI的资源。</mark>POST请求不是幂等的，而PUT请求是幂等的。根据具体的应用场景和资源操作需求，选择适当的请求方法来进行数据提交和资源更新。</p>
+</blockquote>
+<p>从返回的数据可以看到已经修改成功了，也就是说我们空少套白狼了4个椅子</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710184744383.png"></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710185043247.png"></p>
+<h1 id="lab9-将您的结余增加1000元或以上"><a href="#lab9-将您的结余增加1000元或以上" class="headerlink" title="lab9:将您的结余增加1000元或以上"></a>lab9:将您的结余增加1000元或以上</h1><p>同样地利用上面的API，因为我们发现数据不仅可以提交status还可以提交quantity。</p>
+<p>先将quantity改为100，status改为delivered，这样我们就可以不花钱就点了100个价值10元的椅子</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710185344316.png"></p>
+<p>然后修改状态为returned，就可以退钱！！！🤑</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710185742371.png"></p>
+<h1 id="lab10-更新内部视频属性"><a href="#lab10-更新内部视频属性" class="headerlink" title="lab10: 更新内部视频属性"></a>lab10: 更新内部视频属性</h1><p>同lab5的抓包，我们可以看到返回的Json数据有如下几种：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;id&quot;</span>:<span class="number">32</span>,</span><br><span class="line"><span class="string">&quot;video_name&quot;</span>:<span class="string">&quot;catflag.php&quot;</span>,</span><br><span class="line"><span class="string">&quot;conversion_params&quot;</span>:<span class="string">&quot;-v codec h264&quot;</span>,</span><br><span class="line"><span class="string">&quot;profileVideo&quot;</span>:<span class="string">&quot;太多了这里就省略了&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>所以我们需要更改的话就使用PUT协议，在请求的Json数据中指定就好。</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710190618903.png"></p>
+<h1 id="lab11-让crAPI发送一个HTTP调用到“www-baidu-com”-并返回-HTTP响应"><a href="#lab11-让crAPI发送一个HTTP调用到“www-baidu-com”-并返回-HTTP响应" class="headerlink" title="lab11: 让crAPI发送一个HTTP调用到“www.baidu.com” 并返回 HTTP响应"></a>lab11: 让crAPI发送一个HTTP调用到“<a class="link" target="_blank" rel="noopener" href="http://www.baidu.com”/">www.baidu.com”<i class="fas fa-external-link-alt"></i></a> 并返回 HTTP响应</h1><p>同lab2接口与抓包，抓包后我们在请求信息中发现了关键信息：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;mechanic_api&quot;</span>:<span class="string">&quot;http://localhost:8888/workshop/api/mechanic/receive_report&quot;</span>,</span><br></pre></td></tr></table></figure>
+
+<p>我们猜想，把这个地址改为<code>www.baidu.com</code>就能实现lab。</p>
+<p>为了验证这个猜想，我们使用DNSlog进行验证，使用工具：<a class="link" target="_blank" rel="noopener" href="https://dig.pm/">https://dig.pm/<i class="fas fa-external-link-alt"></i></a></p>
+<blockquote>
+<p>DNSlog是一种用于收集和分析DNS查询的日志的技术和工具。在网络通信中，DNS（Domain Name System）用于将域名解析为对应的IP地址。DNSlog通过设置恶意DNS服务器或域名来截获应用程序或系统发出的DNS查询请求，并将查询信息记录到日志中。</p>
+<p>DNSlog注入是一种利用应用程序对DNS查询结果的处理不当而导致的安全漏洞。它通常发生在应用程序通过DNS查询获取动态资源时，没有对返回的DNS响应进行充分的验证和过滤。攻击者可以通过构造恶意的DNS查询请求，将恶意内容注入到应用程序的响应中，从而实现攻击目的。</p>
+</blockquote>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710192317687.png"></p>
+<p>​    复制subdomain并加上http://后替换mechanic_api的值</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710192622165.png"></p>
+<h1 id="lab12-想办法在不知道优惠券代码的情况下获得免费优惠券"><a href="#lab12-想办法在不知道优惠券代码的情况下获得免费优惠券" class="headerlink" title="lab12: 想办法在不知道优惠券代码的情况下获得免费优惠券"></a>lab12: 想办法在不知道优惠券代码的情况下获得免费优惠券</h1><p>先找到输出优惠卷代码的接口，进行抓包查看数据：</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710193920392.png"></p>
+<p>查了一下文档，考点是<code>NoSQL Injection</code>，之前都学的是SQL注入基于MySQL的这里来个NoSQL给我整不会了，先学一下NoSQL的基本知识：</p>
+<blockquote>
+<p>NoSQL注入（NoSQL Injection）是一种攻击技术，针对使用NoSQL数据库的应用程序而言，类似于传统SQL注入攻击。NoSQL注入利用了应用程序对用户输入数据的处理不当，以执行未授权的操作或绕过访问控制。</p>
+<p>NoSQL数据库与传统关系型数据库不同，其查询语言和数据存储机制也不同。然而，一些NoSQL数据库仍然需要处理用户提供的数据，如查询参数、过滤条件等。如果应用程序没有正确验证和过滤这些用户输入数据，就可能存在NoSQL注入漏洞。</p>
+<p>NoSQL注入攻击的原理是攻击者通过在应用程序发送给NoSQL数据库的查询中注入恶意的数据，以干扰查询的逻辑。攻击者可以利用以下方法进行注入攻击：</p>
+<ol>
+<li>注入查询语句：攻击者通过在查询中注入恶意操作符、查询语句或特殊字符，来修改查询的逻辑，获取敏感数据或执行未授权的操作。</li>
+<li>绕过访问控制：攻击者可以通过注入特定的查询条件来绕过应用程序的访问控制机制，获取未授权的数据或执行特权操作。</li>
+<li>盲注入：在一些情况下，应用程序可能没有直接将查询结果返回给用户，而是根据查询的结果来进行后续操作。攻击者可以通过注入特定的查询条件，观察应用程序的行为差异，从而推断出查询的结果或执行特定操作。</li>
+</ol>
+<p>NoSQL（Not Only SQL）是一类非关系型数据库，与传统的关系型数据库（如MySQL、Oracle）相对应。NoSQL数据库设计的初衷是解决关系型数据库在大规模数据存储和高并发访问方面的局限性。</p>
+<p>NoSQL数据库采用了不同的数据模型和存储机制，以满足特定的应用需求。与传统关系型数据库使用表格结构和SQL查询语言不同，NoSQL数据库通常采用以下数据模型之一：</p>
+<ol>
+<li>键值存储（Key-Value Stores）：使用简单的键值对结构存储数据，通过唯一的键来访问数据。例如，Redis、DynamoDB。</li>
+<li>文档存储（Document Stores）：以类似JSON或XML的文档格式存储数据，每个文档都有唯一的标识符。例如，MongoDB、CouchDB。</li>
+<li>列族存储（Column Family Stores）：将数据组织为列族的形式，每个列族包含不同的列和行。例如，HBase、Cassandra。</li>
+<li>图形数据库（Graph Databases）：用于处理图形结构数据，其中节点和边表示实体和它们之间的关系。例如，Neo4j、JanusGraph。</li>
+</ol>
+<p>NoSQL数据库具有以下特点和优势：</p>
+<ul>
+<li>可扩展性：NoSQL数据库通常具有良好的横向扩展性，可以轻松处理大规模数据和高并发访问。</li>
+<li>灵活的数据模型：NoSQL数据库提供了灵活的数据模型，适应不同类型和结构的数据，无需事先定义严格的表格结构。</li>
+<li>高性能：由于去除了复杂的关系模型和复杂的查询语言，NoSQL数据库可以实现更高的读写性能。</li>
+<li>弱一致性：一些NoSQL数据库采用了弱一致性模型，允许数据在不同节点之间存在一定的延迟和不一致性，以提高性能和可用性。</li>
+<li>分布式架构：NoSQL数据库常用于分布式环境中，数据可以在多个节点上进行分布和复制，提供高可用性和容错性。</li>
+</ul>
+</blockquote>
+<p>我们在这里使用了两个数据库软件分别是<code>Postgresdb</code>和<code>Mongodb</code>，通过我们之前的响应信息的Json格式可以判断。但是这里的<code>Postgresdb</code>常简称为Postgres）是一个开源的关系型数据库管理系统（RDBMS），而不是NoSQL数据库。</p>
+<p>经过查阅docker的日志，很神奇我并没有使用这个db，可能是我们的模块暂未使用它吧。</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710200239613.png"></p>
+<p>故我们只需要面对Mongodb进行NoSQL注入就行了</p>
+<p>原本的Json提交数据是：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;coupon_code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1234&quot;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这表示MongoDB将搜索集合中满足查询条件的文档，并返回结果集中包含”coupon_code”字段值为”1234”的文档。</p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710202246556.png"></p>
+<p>在学习了最基本的NoSQL注入的语句和Mongodb数据的结构后我构造了payload:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&quot;coupon_code&quot;</span>: &#123;<span class="string">&quot;$ne&quot;</span>: <span class="string">&quot;hacked by c2yb8er&quot;</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个查询条件的意思是，查找”coupon_code”字段值不等于<code>hacked by c2yb8er</code>的文档。</p>
+<p>其中<code>$ne</code>操作符表示不等于的意思</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9908#toc-4">NoSQL学习link<i class="fas fa-external-link-alt"></i></a></p>
+<h1 id="lab13-找到一种通过修改数据库来兑换已经领取的优惠券的方法"><a href="#lab13-找到一种通过修改数据库来兑换已经领取的优惠券的方法" class="headerlink" title="lab13: 找到一种通过修改数据库来兑换已经领取的优惠券的方法"></a>lab13: 找到一种通过修改数据库来兑换已经领取的优惠券的方法</h1><blockquote>
+<p>有点疑惑，实战的时候找不到这种文档怎么办？</p>
+</blockquote>
+<p>查看文档发现一个接口<code>/workshop/api/shop/apply_coupon</code></p>
+<p><img lazyload alt="image" data-src="D:\Typora\typora-user-images\image-20230710204750759.png"></p>
+<p>我很懵逼，为什么我明明用的Mongodb，不应该是NoSQL注入吗？这里为什么来了一个MySQL中的字符型注入？查阅一下相应代码，真相水落石出了！</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ApplyCouponView</span>(<span class="title class_ inherited__">APIView</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Apply Coupon View to increase the available credit</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @jwt_auth_required</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self, request, user=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        api for checking if coupon is already claimed</span></span><br><span class="line"><span class="string">        if claimed before: returns an error message</span></span><br><span class="line"><span class="string">        else: increases the user credit</span></span><br><span class="line"><span class="string">        :param request: http request for the view</span></span><br><span class="line"><span class="string">            method allowed: POST</span></span><br><span class="line"><span class="string">            http request should be authorised by the jwt token of the user</span></span><br><span class="line"><span class="string">        :param user: User object of the requesting user</span></span><br><span class="line"><span class="string">        :returns Response object with</span></span><br><span class="line"><span class="string">            message and 200 status if no error</span></span><br><span class="line"><span class="string">            message and corresponding status if error</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        coupon_request_body = request.data</span><br><span class="line"></span><br><span class="line">        serializer = CouponSerializer(data=coupon_request_body)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> serializer.is_valid():</span><br><span class="line">            log_error(request.path, request.data, <span class="number">400</span>, serializer.errors)</span><br><span class="line">            <span class="keyword">return</span> Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">            cursor.execute(<span class="string">&quot;SELECT coupon_code from applied_coupon WHERE user_id = &quot;</span>\</span><br><span class="line">                    + <span class="built_in">str</span>(user.<span class="built_in">id</span>)\</span><br><span class="line">                    + <span class="string">&quot; AND coupon_code = &#x27;&quot;</span>\</span><br><span class="line">                    + coupon_request_body[<span class="string">&#x27;coupon_code&#x27;</span>]\</span><br><span class="line">                    + <span class="string">&quot;&#x27;&quot;</span>)</span><br><span class="line">            row = cursor.fetchall()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> row <span class="keyword">and</span> row != <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> Response(</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">&#x27;message&#x27;</span>: row[<span class="number">0</span>][<span class="number">0</span>] + <span class="string">&quot; &quot;</span> + messages.COUPON_ALREADY_APPLIED,</span><br><span class="line">                &#125;,</span><br><span class="line">                status=status.HTTP_400_BAD_REQUEST</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            coupon = Coupon.objects.using(<span class="string">&#x27;mongodb&#x27;</span>).get(coupon_code=coupon_request_body[<span class="string">&#x27;coupon_code&#x27;</span>])</span><br><span class="line">        <span class="keyword">except</span> ObjectDoesNotExist <span class="keyword">as</span> e:</span><br><span class="line">            log_error(request.path, request.data, <span class="number">400</span>, e)</span><br><span class="line">            <span class="keyword">return</span> Response(</span><br><span class="line">                &#123;<span class="string">&#x27;message&#x27;</span>: messages.COUPON_NOT_FOUND&#125;,</span><br><span class="line">                status=status.HTTP_400_BAD_REQUEST</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        AppliedCoupon.objects.create(</span><br><span class="line">            user=user,</span><br><span class="line">            coupon_code=coupon_request_body[<span class="string">&#x27;coupon_code&#x27;</span>]</span><br><span class="line">        )</span><br><span class="line">        user_details = UserDetails.objects.get(user=user)</span><br><span class="line">        user_details.available_credit += coupon_request_body[<span class="string">&#x27;amount&#x27;</span>]</span><br><span class="line">        user_details.save()</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">&#x27;credit&#x27;</span>: user_details.available_credit,</span><br><span class="line">            <span class="string">&#x27;message&#x27;</span>: messages.COUPON_APPLIED</span><br><span class="line">        &#125;, status=status.HTTP_200_OK)</span><br></pre></td></tr></table></figure>
+
+<p>注入点是这段代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">    cursor.execute(<span class="string">&quot;SELECT coupon_code from applied_coupon WHERE user_id = &quot;</span>\</span><br><span class="line">            + <span class="built_in">str</span>(user.<span class="built_in">id</span>)\</span><br><span class="line">            + <span class="string">&quot; AND coupon_code = &#x27;&quot;</span>\</span><br><span class="line">            + coupon_request_body[<span class="string">&#x27;coupon_code&#x27;</span>]\</span><br><span class="line">            + <span class="string">&quot;&#x27;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当我传入如下数据后：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;coupon_code&quot;</span>:<span class="string">&quot;1&#x27;or &#x27;1&#x27;=&#x27;1&quot;</span>,</span><br><span class="line"><span class="string">&quot;amount&quot;</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里执行的SQL语句就会变成这样：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> coupon_code <span class="keyword">from</span> applied_coupon <span class="keyword">WHERE</span> user_id <span class="operator">=</span> <span class="string">&#x27;My_id&#x27;</span> <span class="keyword">AND</span> coupon_code <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span><span class="keyword">or</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>破案了！我还以为我刚刚学的NoSQL注入白学了！🥺</p>
+<h1 id="lab14-查找不为用户执行身份验证检查的接口"><a href="#lab14-查找不为用户执行身份验证检查的接口" class="headerlink" title="lab14: 查找不为用户执行身份验证检查的接口"></a>lab14: 查找不为用户执行身份验证检查的接口</h1><p>同lab3中的<code>/workshop/api/mechanic/mechanic_report?report_id=6 </code></p>
+<p>同lab8中的<code>/workshop/api/shop/orders/1</code></p>
+<h1 id="lab15-找到伪造有效-JWT-令牌的方法"><a href="#lab15-找到伪造有效-JWT-令牌的方法" class="headerlink" title="lab15:找到伪造有效 JWT 令牌的方法"></a>lab15:找到伪造有效 JWT 令牌的方法</h1><h1 id="AddLab1"><a href="#AddLab1" class="headerlink" title="AddLab1:"></a>AddLab1:</h1><h1 id="AddLab2"><a href="#AddLab2" class="headerlink" title="AddLab2:"></a>AddLab2:</h1>
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul class="copyright-info-content">
+        <li>
+            <span class="type">本文标题</span>：<span class="content">crAPI靶场学习记录</span>
+        </li>
+        <li>
+            <span class="type">本文作者</span>：<span class="content">二十八华生</span>
+        </li>
+        <li>
+            <span class="type">创建时间</span>：<span class="content">2023-07-10 15:10:49</span>
+        </li>
+        <li class="post-link">
+            <span class="type">本文链接</span>：<span class="content">2023/07/10/crAPI靶场学习记录/</span>
+        </li>
+        <li>
+            <span class="type">版权声明</span>：<span class="content">本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！</span>
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/API%E5%AE%89%E5%85%A8/">#API安全</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                               rel="next"
+                               href="/2023/07/08/Pikachu%E9%9D%B6%E5%9C%BA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"
+                            >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Pikachu靶场学习记录</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                                <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA"><span class="nav-text">靶场搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab0-%E5%88%9D%E5%A7%8B%E8%B4%A6%E6%88%B7"><span class="nav-text">lab0:初始账户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab1-%E8%AE%BF%E9%97%AE%E5%85%B6%E5%AE%83%E7%94%A8%E6%88%B7%E8%BD%A6%E8%BE%86%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="nav-text">lab1:访问其它用户车辆的详细信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab2-%E8%AE%BF%E9%97%AE%E5%85%B6%E5%AE%83%E7%94%A8%E6%88%B7%E7%9A%84%E6%9C%BA%E6%A2%B0%E6%8A%A5%E5%91%8A"><span class="nav-text">lab2:访问其它用户的机械报告</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab3-%E9%87%8D%E7%BD%AE%E5%85%B6%E5%AE%83%E7%94%A8%E6%88%B7%E7%9A%84%E5%AF%86%E7%A0%81"><span class="nav-text">lab3: 重置其它用户的密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab4-%E6%89%BE%E5%88%B0%E6%B3%84%E9%9C%B2%E5%85%B6%E5%AE%83%E7%94%A8%E6%88%B7%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E7%9A%84API%E6%8E%A5%E5%8F%A3"><span class="nav-text">lab4: 找到泄露其它用户敏感信息的API接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab5-%E6%89%BE%E5%88%B0%E6%B3%84%E9%9C%B2%E8%A7%86%E9%A2%91%E5%86%85%E9%83%A8%E5%B1%9E%E6%80%A7%E7%9A%84API%E6%8E%A5%E5%8F%A3"><span class="nav-text">lab5: 找到泄露视频内部属性的API接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab6-%E4%BD%BF%E7%94%A8-%E2%80%9Ccontact-mechanic%E2%80%9D-%E5%8A%9F%E8%83%BD%E5%AE%8C%E6%88%90%E7%AC%AC7%E5%B1%82DoS"><span class="nav-text">lab6: 使用 “contact mechanic” 功能完成第7层DoS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab7-%E5%88%A0%E9%99%A4%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%94%A8%E6%88%B7%E7%9A%84%E8%A7%86%E9%A2%91"><span class="nav-text">lab7:删除另一个用户的视频</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab8-%E5%85%8D%E8%B4%B9%E8%8E%B7%E5%BE%97%E4%B8%80%E4%BB%B6%E7%89%A9%E5%93%81"><span class="nav-text">lab8: 免费获得一件物品</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab9-%E5%B0%86%E6%82%A8%E7%9A%84%E7%BB%93%E4%BD%99%E5%A2%9E%E5%8A%A01000%E5%85%83%E6%88%96%E4%BB%A5%E4%B8%8A"><span class="nav-text">lab9:将您的结余增加1000元或以上</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab10-%E6%9B%B4%E6%96%B0%E5%86%85%E9%83%A8%E8%A7%86%E9%A2%91%E5%B1%9E%E6%80%A7"><span class="nav-text">lab10: 更新内部视频属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab11-%E8%AE%A9crAPI%E5%8F%91%E9%80%81%E4%B8%80%E4%B8%AAHTTP%E8%B0%83%E7%94%A8%E5%88%B0%E2%80%9Cwww-baidu-com%E2%80%9D-%E5%B9%B6%E8%BF%94%E5%9B%9E-HTTP%E5%93%8D%E5%BA%94"><span class="nav-text">lab11: 让crAPI发送一个HTTP调用到“www.baidu.com” 并返回 HTTP响应</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab12-%E6%83%B3%E5%8A%9E%E6%B3%95%E5%9C%A8%E4%B8%8D%E7%9F%A5%E9%81%93%E4%BC%98%E6%83%A0%E5%88%B8%E4%BB%A3%E7%A0%81%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%8E%B7%E5%BE%97%E5%85%8D%E8%B4%B9%E4%BC%98%E6%83%A0%E5%88%B8"><span class="nav-text">lab12: 想办法在不知道优惠券代码的情况下获得免费优惠券</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab13-%E6%89%BE%E5%88%B0%E4%B8%80%E7%A7%8D%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%A5%E5%85%91%E6%8D%A2%E5%B7%B2%E7%BB%8F%E9%A2%86%E5%8F%96%E7%9A%84%E4%BC%98%E6%83%A0%E5%88%B8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-text">lab13: 找到一种通过修改数据库来兑换已经领取的优惠券的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab14-%E6%9F%A5%E6%89%BE%E4%B8%8D%E4%B8%BA%E7%94%A8%E6%88%B7%E6%89%A7%E8%A1%8C%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E6%A3%80%E6%9F%A5%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-text">lab14: 查找不为用户执行身份验证检查的接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab15-%E6%89%BE%E5%88%B0%E4%BC%AA%E9%80%A0%E6%9C%89%E6%95%88-JWT-%E4%BB%A4%E7%89%8C%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-text">lab15:找到伪造有效 JWT 令牌的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AddLab1"><span class="nav-text">AddLab1:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AddLab2"><span class="nav-text">AddLab2:</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            
+<footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+                <span>2023</span> -
+            
+            2023
+            
+                &nbsp;<i class="fas fa-heart icon-animate"></i>
+                &nbsp;<a href="/">二十八华生</a>
+            
+        </div>
+        
+            <script async data-pjax
+                    src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                
+                    总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.5.2</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/dark-light-toggle.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/code-block.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/lazyload.js"></script>
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/post-helper.js"></script>
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/anime.min.js"></script>
+        
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/toc.js"></script>
+        
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
