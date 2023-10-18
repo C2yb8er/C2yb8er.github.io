@@ -202,7 +202,7 @@
     
         <span class="article-update-date article-meta-item">
         <i class="fas fa-file-pen"></i>&nbsp;
-        <span class="pc">2023-07-08 01:21:57</span>
+        <span class="pc">2023-10-18 19:44:22</span>
     </span>
     
     
@@ -275,8 +275,8 @@
 
 
 
-<h1 id="Fastbin-Attack"><a href="#Fastbin-Attack" class="headerlink" title="Fastbin Attack"></a>Fastbin Attack</h1><h2 id="0x0-babyheap-0ctf-2017"><a href="#0x0-babyheap-0ctf-2017" class="headerlink" title="0x0:babyheap_0ctf_2017"></a>0x0:babyheap_0ctf_2017</h2><h3 id="0-我决定下工夫来静态分析一波！"><a href="#0-我决定下工夫来静态分析一波！" class="headerlink" title="0.我决定下工夫来静态分析一波！"></a>0.我决定下工夫来静态分析一波！</h3><h4 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a>main函数</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.4fl3g6xblbc0.png"></p>
-<h4 id="Init函数"><a href="#Init函数" class="headerlink" title="Init函数"></a>Init函数</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.2pb62wxp8g80.png"></p>
+<h1 id="Fastbin-Attack"><a href="#Fastbin-Attack" class="headerlink" title="Fastbin Attack"></a>Fastbin Attack</h1><h2 id="0x0-babyheap-0ctf-2017"><a href="#0x0-babyheap-0ctf-2017" class="headerlink" title="0x0:babyheap_0ctf_2017"></a>0x0:babyheap_0ctf_2017</h2><h3 id="0-我决定下工夫来静态分析一波！"><a href="#0-我决定下工夫来静态分析一波！" class="headerlink" title="0.我决定下工夫来静态分析一波！"></a>0.我决定下工夫来静态分析一波！</h3><h4 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a>main函数</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.4fl3g6xblbc0.png"></p>
+<h4 id="Init函数"><a href="#Init函数" class="headerlink" title="Init函数"></a>Init函数</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.2pb62wxp8g80.png"></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  fd = open(<span class="string">&quot;/dev/urandom&quot;</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// /dev/urandom 是 Linux 系统中的一种随机数生成设备，可以用来获取安全随机数。在此代码中，通过打开该设备文件，可以获取到对应的文件描述符，从而可以使用系统调用 read() 等函数从该设备文件中读取随机数。</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( fd &lt; <span class="number">0</span> || read(fd, buf, <span class="number">0x10</span>uLL) != <span class="number">16</span> )</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  close(fd);</span><br><span class="line">  addr = (<span class="type">char</span> *)((buf[<span class="number">0</span>] % <span class="number">0x555555543000</span>uLL + <span class="number">0x10000</span>) &amp; <span class="number">0xFFFFFFFFFFFFF000</span>LL);</span><br><span class="line">  v3 = (buf[<span class="number">1</span>] % <span class="number">0xE80</span>uLL) &amp; <span class="number">0xFFFFFFFFFFFFFFF0</span>LL;</span><br><span class="line">  <span class="keyword">if</span> ( mmap(addr, <span class="number">0x1000</span>uLL, <span class="number">3</span>, <span class="number">34</span>, <span class="number">-1</span>, <span class="number">0LL</span>) != addr )</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  <span class="keyword">return</span> &amp;addr[v3];</span><br></pre></td></tr></table></figure>
 
 <p>​    我们逐条剖析：</p>
@@ -292,12 +292,12 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mmap(addr, <span class="number">0x1000</span>uLL, <span class="number">3</span>, <span class="number">34</span>, <span class="number">-1</span>, <span class="number">0LL</span>)</span><br></pre></td></tr></table></figure>
 
 <p>​    简单来说就是从addr地址起，分配一页(0x1000字节)<mark>可读可写可执行</mark>的区域。</p>
-<h4 id="SizeChoice函数"><a href="#SizeChoice函数" class="headerlink" title="SizeChoice函数"></a>SizeChoice函数</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.2czzd8e23uhw.png"></p>
+<h4 id="SizeChoice函数"><a href="#SizeChoice函数" class="headerlink" title="SizeChoice函数"></a>SizeChoice函数</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.2czzd8e23uhw.png"></p>
 <h4 id="sub-123D函数–-gt-read-one-by-one函数"><a href="#sub-123D函数–-gt-read-one-by-one函数" class="headerlink" title="sub_123D函数–&gt;read_one_by_one函数"></a>sub_123D函数–&gt;read_one_by_one函数</h4><p><code>SizeChoice</code>函数中还有一个名为<code>sub_123D</code>的函数，我们点开看看：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.4i4gxo2mmtg0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.4i4gxo2mmtg0.png"></p>
 <p>​    定义了三个局部变量：v3用于存储循环次数，buf用于存储读取到的字符，v6用于存储read函数的返回值。<br>​    进入循环后，每次循环通过read函数从标准输入中读取一个字符，并判断该字符是否为换行符（’\n’）。如果读取到的字符为换行符，则跳出循环。如果读取到的字符不为换行符，则将该字符存储到a1（也就是ptr）指向的内存中，并将v5加1表示已经读取的字节数增加了1。如果read函数返回值小于等于0，表示出现了错误，此时通过<code>*_errno_location()</code>函数获取错误码并判断是否为<code>EAGAIN</code>或<code>EINTR</code>，如果不是则跳出循环。<br>​    最后，将a1指向的内存中第v5个字节设置为’\0’表示字符串结束，并返回实际读取的字节数v5。</p>
 <p>​    <strong>一言概之，这个函数就是安全地向ptr中写入8个字节并且加上换行符.</strong></p>
-<h4 id="Allocate函数"><a href="#Allocate函数" class="headerlink" title="Allocate函数"></a>Allocate函数</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.3o2n9qvb9l00.png"></p>
+<h4 id="Allocate函数"><a href="#Allocate函数" class="headerlink" title="Allocate函数"></a>Allocate函数</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.3o2n9qvb9l00.png"></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// _DWORD* 是一个指向 DWORD 类型的指针，其中 DWORD 是一个 32 位无符号整数类型</span></span><br><span class="line"><span class="comment">// _QWORD * 表示指向 unsigned long long 类型的指针，即 64 位整数类型的指针。</span></span><br><span class="line">v3 = <span class="built_in">calloc</span>(v2, <span class="number">1uLL</span>);</span><br></pre></td></tr></table></figure>
 
 <p>​    <code>    calloc()</code> 函数是 C 语言标准库中的动态内存分配函数之一，用于在堆上分配一块大小为 <code>v2</code> 字节（即 <code>v2</code> 个字节）的内存，并将这块内存的每个字节都初始化为 0。函数的定义如下：</p>
@@ -313,22 +313,22 @@
 <li>第三行将该<mark>内存块的指针</mark>存储到指定索引对应的位置中，方便释放时使用。</li>
 </ul>
 <p><strong>注意，最多只能分配16块内存块。</strong></p>
-<h4 id="Fill函数"><a href="#Fill函数" class="headerlink" title="Fill函数"></a>Fill函数</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.47znt11n1ho0.png"></p>
+<h4 id="Fill函数"><a href="#Fill函数" class="headerlink" title="Fill函数"></a>Fill函数</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.47znt11n1ho0.png"></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = *(<span class="type">unsigned</span> <span class="type">int</span> *)(<span class="number">24LL</span> * (<span class="type">int</span>)result + a1);</span><br><span class="line"><span class="keyword">if</span> ( (_DWORD)result == <span class="number">1</span> )</span><br></pre></td></tr></table></figure>
 
 <p>​    还记得我们刚刚Allocate函数中的标记位置吗？这里就是检测我们要操作的堆块是否是已经被分配了的。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> sub_11B2(*(_QWORD *)(<span class="number">24LL</span> * v2 + a1 + <span class="number">16</span>), v3);</span><br></pre></td></tr></table></figure>
 
 <p>​    这里出现了一个新的函数(我将它重新命名为<code>ensure_read</code>)，参数1就是我们指向堆块首地址的指针，参数2就是我们即将要输出content的长度。让我们点进去这个函数看看它干了什么：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.2mc1fxxua500.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.2mc1fxxua500.png"></p>
 <p>​    <strong>一言概之，这个函数就是保证我们能够输入我们要求大小的content.</strong>    </p>
-<h4 id="Free函数"><a href="#Free函数" class="headerlink" title="Free函数"></a>Free函数</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.3233e6pcm6m0.png"></p>
+<h4 id="Free函数"><a href="#Free函数" class="headerlink" title="Free函数"></a>Free函数</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.3233e6pcm6m0.png"></p>
 <p>​    当你把Allocate函数分析弄明白后，Free函数的机制你就应该能够轻松掌握。</p>
 <p>​    首先判断我们要释放的堆块是否是被分配过的，然后修改标志和大小，最后将指向堆块的指针设置为<code>NULL</code>。</p>
 <p>​    这里的free函数做的比较规范，所以不存在<code>UAF漏洞</code>。</p>
 <h4 id="Dump函数"><a href="#Dump函数" class="headerlink" title="Dump函数"></a>Dump函数</h4><p><img lazyload alt="image" data-src="/home/c2yb8er/Typora/images/image-20230505225935108.png"></p>
 <p>​    同理先判断传入的指针所对应的堆块状态，然后我们发现了又一个新函数，参数1为堆块指针，参数2为堆块大小。现在我们点进去看看这个函数做了什么：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.6a1a1c50mhs0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230505/c2yb8erimage.6a1a1c50mhs0.png"></p>
 <p>​    与前面的<code>ensure_read函数</code>如出一辙，只不过是read改为write，故不多解释了。</p>
 <h3 id="1-漏洞成因："><a href="#1-漏洞成因：" class="headerlink" title="1.漏洞成因："></a>1.漏洞成因：</h3><p>​    在详细分析整个程序流程后，这个程序的漏洞点在哪里呢？</p>
 <p>​    比较显然的堆溢出漏洞。虽然在Allocate函数中对size有所限制，但是在Fill函数中却没有对size有所限制。</p>
@@ -377,23 +377,23 @@
 <li>由于如果成功将one_gadget地址写入到<code>malloc_hook</code>位置，那么当下一次调用<code>malloc</code>函数时，它将会尝试执行<code>malloc_hook</code>指向的地址，即one_gadget。所以我们现在的任务就是要将<code>malloc_hook</code>的地址处写上我们的one_gadget地址，由于fake chunk与malloc_hook的偏移是固定的所以这一点很容易做到！</li>
 <li>申请任意大小的chunk，让执行malloc_hook所指向的地址也就是one_gadget，从而getshell！</li>
 </ol>
-<h3 id="3-流程："><a href="#3-流程：" class="headerlink" title="3.流程："></a>3.流程：</h3><h4 id="查看mmap函数分配地址及其内容："><a href="#查看mmap函数分配地址及其内容：" class="headerlink" title="查看mmap函数分配地址及其内容："></a>查看mmap函数分配地址及其内容：</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2mdppaw8yu20.png"></p>
+<h3 id="3-流程："><a href="#3-流程：" class="headerlink" title="3.流程："></a>3.流程：</h3><h4 id="查看mmap函数分配地址及其内容："><a href="#查看mmap函数分配地址及其内容：" class="headerlink" title="查看mmap函数分配地址及其内容："></a>查看mmap函数分配地址及其内容：</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2mdppaw8yu20.png"></p>
 <p><img lazyload alt="image" data-src="/home/c2yb8er/Typora/images/image-20230506192524242.png"></p>
-<h4 id="泄露unsortbin-addr地址"><a href="#泄露unsortbin-addr地址" class="headerlink" title="泄露unsortbin_addr地址"></a>泄露unsortbin_addr地址</h4><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.6eukpsjy1f00.png"></p>
+<h4 id="泄露unsortbin-addr地址"><a href="#泄露unsortbin-addr地址" class="headerlink" title="泄露unsortbin_addr地址"></a>泄露unsortbin_addr地址</h4><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.6eukpsjy1f00.png"></p>
 <pre><code> free过后：
 </code></pre>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2ve91pv3ktw0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2ve91pv3ktw0.png"></p>
 <h5 id="修改chunk2的fd使得其指向为chunk5"><a href="#修改chunk2的fd使得其指向为chunk5" class="headerlink" title="修改chunk2的fd使得其指向为chunk5"></a>修改chunk2的fd使得其指向为chunk5</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Fill(0,b&#x27;a&#x27;*0x10 + p64(0) + p64(0x21) + p8(0x80))</span><br><span class="line"># 注意这里最后只覆盖低四位，故用p8()</span><br></pre></td></tr></table></figure>
 
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.4fngitfvry80.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.4fngitfvry80.png"></p>
 <p>​    可以看到，已经修改成功：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.38kqz68rcga0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.38kqz68rcga0.png"></p>
 <blockquote>
 <p>​    可以看到覆盖后fastbin中就变成了chunk2 –&gt; chunk5。那么接下来如果我们想要对chunk5进行操作的话，就需要重启fastbin中chunk2指向的chunk5，但是由于chunk5的size是0x90而不是0x20，所以即使chunk5的chunk指针在fastbin的0x20单项链表中我们也是无法启用的。所以我们还需要通过向chunk4中写溢出数据，使其覆盖chunk5的size为0x20，我们才能够重新启用chunk5。<br>————————————————<br>原文链接：<a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41202237/article/details/112320919">https://blog.csdn.net/qq_41202237/article/details/112320919<i class="fas fa-external-link-alt"></i></a></p>
 </blockquote>
 <h5 id="修改chunk5的size大小，从而能够在fastbin-0x20这条链上操作："><a href="#修改chunk5的size大小，从而能够在fastbin-0x20这条链上操作：" class="headerlink" title="修改chunk5的size大小，从而能够在fastbin:0x20这条链上操作："></a>修改chunk5的size大小，从而能够在fastbin:0x20这条链上操作：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fill(3,p64(0)*3 + p64(0x21))</span><br></pre></td></tr></table></figure>
 
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2idd5zvcgoi0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2idd5zvcgoi0.png"></p>
 <h5 id="操作fastbin-0x20这条链"><a href="#操作fastbin-0x20这条链" class="headerlink" title="操作fastbin:0x20这条链"></a>操作fastbin:0x20这条链</h5><blockquote>
 <p>​    接下来我们只需要重新申请两个0x20大小的chunk，第一次申请0x20会重新启用fastbin中0x20单项链表尾部的chunk2，第二次申请0x20就会启用fastbin中0x20单向链表剩下的chunk5：</p>
 </blockquote>
@@ -415,11 +415,11 @@
 <p>​    接下来的操作就比较容易了，由于前面已经在id为2的结构体处部署了chunk5的chunk指针，所以接下来我们只需要调用程序中的dump()函数打印id为2的chunk内容，就可以把chunk5中的unsortbin_addr（fd）打印出来了！！！</p>
 </blockquote>
 <p>​    free掉chunk5后我们发现其指向了main_arena的地址：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.6u1n3c6zfos0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.6u1n3c6zfos0.png"></p>
 <p>​    我一开始还在疑惑为什么有两个泄露的基地址，仔细一看原来是此时chunk5的fd和bk都是泄露的(main_arena+88)</p>
 <p><strong>—–&gt;在学完Unsorted bin后来看这一点，我发现是这里是理解错了，我当时没有理解好Unsorted bin中的结构是什么样子：双向链表！</strong></p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230507/c2yb8erimage.3f3vqau81o80.png"></p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.567xs1doqb40.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230507/c2yb8erimage.3f3vqau81o80.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.567xs1doqb40.png"></p>
 <pre><code>然后就是正常的泄露基地址，但是要注意的是：
 </code></pre>
 <p>​    unsortbin_addr与main_arena之间的偏移是固定的88<br>​    main_arena与libc基地址的偏移是固定的0x3c4b20<br>​    这样一来我们就得到了libc的基地址</p>
@@ -428,7 +428,7 @@
 <p>​    这里我参考的文章的作者用了这段代码来计算这个固定值88:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#需要提前指定你的计算机架构</span><br><span class="line">def offset_bin_main_arena(idx):</span><br><span class="line">    word_bytes = context.word_size / 8</span><br><span class="line">    offset = 4  # lock</span><br><span class="line">    offset += 4  # flags</span><br><span class="line">    offset += word_bytes * 10  # offset fastbin</span><br><span class="line">    offset += word_bytes * 2  # top,last_remainder</span><br><span class="line">    offset += idx * 2 * word_bytes  # idx</span><br><span class="line">    offset -= word_bytes * 2  # bin overlap</span><br><span class="line">    return offset</span><br></pre></td></tr></table></figure>
 
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.1dutgpb9amrk.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.1dutgpb9amrk.png"></p>
 <p>​    但是我不太明白为什么要这样做，为理解的这个88是我们在unsorted bin中那条chunk5指向的链中标出来的：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all: 0x55d6f4207080 —▸ 0x7f1725bc4b78 (main_arena+88) ◂— 0x55d6f4207080</span><br></pre></td></tr></table></figure>
 
@@ -445,20 +445,20 @@
 <p><img lazyload alt="image" data-src="/home/c2yb8er/Typora/images/image-20230506210742518.png"></p>
 <p>​    可以看出新分配是从被free的chunk5中重启用的。</p>
 <p>​    再次释放：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2k1tm4xko3s0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2k1tm4xko3s0.png"></p>
 <h5 id="通过修改重启的chunk5来修改chunk7"><a href="#通过修改重启的chunk5来修改chunk7" class="headerlink" title="通过修改重启的chunk5来修改chunk7"></a>通过修改重启的chunk5来修改chunk7</h5><blockquote>
 <p>​    这样一来我们就有承接fake_chunk的chunk7了，此时的chunk7的fd指针指向的是NULL。还记得前半部分在id为2的位置部署的chunk5吗，此时chunk7由于被放在了id为4原来chunk5的位置，chunk7的chunk地址与chunk5的地址指向的是同一个位置，所以对id为2的chunk5进行操作，也就相当于对chunk7进行操作。</p>
 </blockquote>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.51xubemtcig0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.51xubemtcig0.png"></p>
 <blockquote>
 <p>​    所以我们只需要向id为2的chunk5中填充fake_chunk的地址，那么chunk7的fd位置就会被覆盖成fake_chunk!</p>
 </blockquote>
 <h5 id="寻找fake-chunk的方法："><a href="#寻找fake-chunk的方法：" class="headerlink" title="寻找fake_chunk的方法："></a>寻找fake_chunk的方法：</h5><p>​    首先在gdb中输入下方命令查找main_arena的地址：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print (void*)&amp;main_arena</span><br></pre></td></tr></table></figure>
 
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.5772ursy1cg.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.5772ursy1cg.png"></p>
 <p>​    可以看到当前流程中main_arena的地址为<code>0x7fe7fedc4b20</code>。看一下<code>main_arena - 0x10</code>位置的malloc_hook：</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.6lyohplnqk00.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.6lyohplnqk00.png"></p>
 <p>​    可以看到malloc_hook的地址为<code>0x7fe7fedc4b10</code>，那么接下来使用pwndbg中的<code>find_fake_fast</code>函数和查找一下可以将malloc_hook作为内容地址的<code>0x70（0x7F）</code>大小的fake_chunk，使用下面的命令:</p>
 <p>​    <code>(find_fake_fast+被写入地址+chunk大小)</code>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find_fake_fast 0x7fe7fedc4b10 0x7f</span><br></pre></td></tr></table></figure>
@@ -471,26 +471,26 @@
 </ul>
 <p>​    我没有太理解这里的<code>有利于用错字节找到fake_chunk</code>是什么意思，贴一个chat回答的内容：</p>
 <p>​    (经典chat，说了感觉又没说，bushi)</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.76ezsfchmo80.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.76ezsfchmo80.png"></p>
 <p>​    可以看到pwndbg已经为我们找到了合适的fake_chunk：<code>0x7fe7fedc4aed</code>。</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.3yjykrvrsvy0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.3yjykrvrsvy0.png"></p>
 <p><img lazyload alt="image" data-src="/home/c2yb8er/Typora/images/image-20230506213701686.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fake_offset_main = main_arena - fake_chunk = 0x7fe7fedc4b20 - 0x7fe7fedc4b10 = 0x33</span><br><span class="line">fake_offset_hook = malloc_hook_addr - fake_chunk = 0x7fe7fedc4b10 - 0x7fe7fedc4b10 = 0x23</span><br></pre></td></tr></table></figure>
 
 
 
-<h5 id="续接上文修改chunk7"><a href="#续接上文修改chunk7" class="headerlink" title="续接上文修改chunk7"></a>续接上文修改chunk7</h5><p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2c0qd34wq3ms.png"></p>
+<h5 id="续接上文修改chunk7"><a href="#续接上文修改chunk7" class="headerlink" title="续接上文修改chunk7"></a>续接上文修改chunk7</h5><p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2c0qd34wq3ms.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fake_chunk_addr = main_arena_addr - 0x33 </span><br><span class="line">fake_chunk = p64(fake_chunk_addr)</span><br><span class="line">Fill(2,fake_chunk)</span><br></pre></td></tr></table></figure>
 
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.14zzpmo4hk2k.png"></p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2osyb6pm2mg0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.14zzpmo4hk2k.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.2osyb6pm2mg0.png"></p>
 <blockquote>
 <p>​    可以看到既然fake_chunk已经被挂进fastbin了，所以我们只需要再次申请两个size为0x70大小的chunk。申请第一个0x70的chunk重启chunk7，申请第二个0x70的chunk将fake_chunk作为正常chunk启用：</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Allocate(0x60)</span><br><span class="line">Allocate(0x60)</span><br></pre></td></tr></table></figure>
 
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.17s14q8hd2e8.png"></p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.69w261jg8ts0.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.17s14q8hd2e8.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.69w261jg8ts0.png"></p>
 <h5 id="控制fake-chunk，通过one-gadget从而getshell！"><a href="#控制fake-chunk，通过one-gadget从而getshell！" class="headerlink" title="控制fake_chunk，通过one_gadget从而getshell！"></a>控制fake_chunk，通过one_gadget从而getshell！</h5><blockquote>
 <p>​    那么的到one_gadget了之后，就可以调用程序本身Fill()函数，向id为6的fake_chunk中的malloc_hook地址位置写one_gadget了。那么malloc_hook相对于fake_chunk的内容起始位置的偏移为0x13，所以构建payload_for_hook及交互代码：</p>
 </blockquote>
@@ -498,7 +498,7 @@
 
 <p>​    <strong>————-》<code>0x13</code>怎么得来的呢？</strong></p>
 <p>​        根据前面的计算malloc_hook相对fake_chunk的偏移为<code>0x23</code>，也就是说去掉fake_chunk的prev_size和size，malloc_hook的起始位置相对于fake_chunk数据区域起始地址的偏移为<code>0x13</code>。</p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.1mxf8wyadw8w.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.1mxf8wyadw8w.png"></p>
 <p><img lazyload alt="image" data-src="/home/c2yb8er/Typora/images/image-20230506231523491.png"></p>
 <blockquote>
 <p>​    这样一来，malloc_hook中就被安置好了，只需要调用程序中的allocate()函数创建任意大小的chunk，就可以触发one_gadget拿shell！！！</p>
@@ -512,7 +512,7 @@
 </blockquote>
 <h5 id="不知道为什么远程通了，本地没通"><a href="#不知道为什么远程通了，本地没通" class="headerlink" title="不知道为什么远程通了，本地没通"></a>不知道为什么远程通了，本地没通</h5><p>​    本地照理说应该是可以打通的，但是system函数卡在了某个位置上：</p>
 <p><img lazyload alt="image" data-src="/home/c2yb8er/Typora/images/image-20230506232256781.png"></p>
-<p><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.69ypvhttvk40.png"></p>
+<p><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230506/c2yb8erimage.69ypvhttvk40.png"></p>
 <h1 id="Unsorted-Bin-Attack"><a href="#Unsorted-Bin-Attack" class="headerlink" title="Unsorted Bin Attack"></a>Unsorted Bin Attack</h1><blockquote>
 <h3 id="Unsorted-Bin基本来源"><a href="#Unsorted-Bin基本来源" class="headerlink" title="Unsorted Bin基本来源"></a>Unsorted Bin基本来源</h3><ol>
 <li>当一个较大的 chunk 被分割成两半后，如果剩下的部分大于 MINSIZE，就会被放到 unsorted bin 中。</li>
@@ -522,7 +522,7 @@
 <h3 id="Unsorted-Bin基本使用情况"><a href="#Unsorted-Bin基本使用情况" class="headerlink" title="Unsorted Bin基本使用情况"></a>Unsorted Bin基本使用情况</h3><ol>
 <li><p>Unsorted Bin 在使用的过程中，采用的遍历顺序是 FIFO，<strong>即插入的时候插入到 unsorted bin 的头部，取出的时候从链表尾获取</strong>。</p>
 </li>
-<li><p>在程序 malloc 时，如果在 fastbin，small bin 中找不到对应大小的 chunk，就会尝试从 Unsorted Bin 中寻找 chunk。如果取出来的 chunk 大小刚好满足，就会直接返回给用户，否则就会把这些 chunk 分别插入到对应的 bin 中。<br><img lazyload alt="image" data-src="https://cdn.staticaly.com/gh/C2yb8er/picx-images-hosting@master/20230507/c2yb8erimage.1m0mv03x6nc0.png"></p>
+<li><p>在程序 malloc 时，如果在 fastbin，small bin 中找不到对应大小的 chunk，就会尝试从 Unsorted Bin 中寻找 chunk。如果取出来的 chunk 大小刚好满足，就会直接返回给用户，否则就会把这些 chunk 分别插入到对应的 bin 中。<br><img lazyload alt="image" data-src="https://jsd.cdn.zzko.cn/gh/C2yb8er/picx-images-hosting@master/20230507/c2yb8erimage.1m0mv03x6nc0.png"></p>
 <h3 id="Unsorted-Bin-Attack-原理"><a href="#Unsorted-Bin-Attack-原理" class="headerlink" title="Unsorted Bin Attack 原理"></a>Unsorted Bin Attack 原理</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* remove from unsorted list */</span></span><br><span class="line"><span class="keyword">if</span> (__glibc_unlikely (bck-&gt;fd != victim))</span><br><span class="line">  malloc_printerr (<span class="string">&quot;malloc(): corrupted unsorted chunks 3&quot;</span>);</span><br><span class="line">unsorted_chunks (av)-&gt;bk = bck;</span><br><span class="line">bck-&gt;fd = unsorted_chunks (av);</span><br></pre></td></tr></table></figure>
 
 <p>​    即是如果我们控制了 bk 的值，我们就能将 <code>unsorted_chunks (av)</code> 写到任意地址</p>
